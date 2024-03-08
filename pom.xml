@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.yujigu</groupId>
+    <artifactId>summer</artifactId>
+    <version>2024</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>summer-common</module>
+        <module>summer-server-feign</module>
+        <module>summer-server-oauth</module>
+        <module>summer-server-gateway</module>
+        <module>summer-server-order</module>
+        <module>summer-server-user</module>
+        <module>summer-server-goods</module>
+        <module>summer-server-pay</module>
+        <module>summer-generator</module>
+    </modules>
+
+
+    <!--  统一jar包管理-->
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <symxns.version>2024</symxns.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <springboot.version>3.0.2</springboot.version>
+        <springcloud.version>2022.0.0</springcloud.version>
+        <alibaba-cloud.version>2022.0.0.0-RC1</alibaba-cloud.version>
+        <authorization-server.version>1.0.2</authorization-server.version>
+        <authorization-server.version>1.0.2</authorization-server.version>
+
+        <spring-cloud-starter-bootstrap.version>4.0.0</spring-cloud-starter-bootstrap.version>
+        <spring-cloud-starter-loadbalancer.version>4.0.0</spring-cloud-starter-loadbalancer.version>
+
+        <junit.version>4.12</junit.version>
+        <log4j.version>1.2.17</log4j.version>
+        <jsoup.version>1.13.1</jsoup.version>
+        <mysql.version>8.0.21</mysql.version>
+        <!--        <druid.version>1.2.15</druid.version>-->
+        <druid3.version>1.2.20</druid3.version>
+        <mybatis-plus.spring.boot.version>3.5.3.1</mybatis-plus.spring.boot.version>
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <mybatisplus.version>1.7.2-RELEASE</mybatisplus.version>
+        <knife4j.version>4.3.0</knife4j.version>
+        <velocity.version>1.7</velocity.version>
+        <hutool.version>5.8.11</hutool.version>
+        <minio.version>8.4.3</minio.version>
+        <fastjson.version>2.0.16</fastjson.version>
+        <swagger.version>2.9.2</swagger.version>
+        <okhttp.version>4.9.0</okhttp.version>
+        <bcprov.version>1.56</bcprov.version>
+        <jakarta-servlet-api.version>6.0.0</jakarta-servlet-api.version>
+        <spring-cloud-starter-bootstrap.version>4.0.0</spring-cloud-starter-bootstrap.version>
+        <spring-cloud-starter-loadbalancer.version>4.0.0</spring-cloud-starter-loadbalancer.version>
+    </properties>
+
+    <dependencyManagement>
+
+        <dependencies>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-gateway-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-oauth2-authorization-server</artifactId>
+                <version>${authorization-server.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>${jakarta-servlet-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jsoup</groupId>
+                <artifactId>jsoup</artifactId>
+                <version>${jsoup.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.jeffreyning</groupId>
+                <artifactId>mybatisplus-plus</artifactId>
+                <version>${mybatisplus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!-- bootstrap -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-bootstrap</artifactId>
+                <version>${spring-cloud-starter-bootstrap.version}</version>
+            </dependency>
+            <!-- 负载均衡-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+                <version>${spring-cloud-starter-loadbalancer.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${springcloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${alibaba-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-3-starter</artifactId>
+                <version>${druid3.version}</version>
+            </dependency>
+            <!--            <dependency>-->
+            <!--                <groupId>com.alibaba</groupId>-->
+            <!--                <artifactId>druid-spring-boot-starter</artifactId>-->
+            <!--                <version>${druid.version}</version>-->
+            <!--            </dependency>-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <!--            <dependency>-->
+            <!--                <groupId>org.projectlombok</groupId>-->
+            <!--                <artifactId>lombok</artifactId>-->
+            <!--                <version>${lombok.version}</version>-->
+            <!--                <optional>false</optional>-->
+            <!--            </dependency>-->
+            <dependency>
+                <artifactId>velocity</artifactId>
+                <groupId>org.apache.velocity</groupId>
+                <version>${velocity.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <!--            BouncyCastle是一个开源的加解密解决方案，主页在http://www.bouncycastle.org/-->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bcprov.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp.version}</version>
+            </dependency>
+
+            <!--sym 2024-->
+            <dependency>
+                <groupId>com.symxns.spring</groupId>
+                <artifactId>sym-spring-aliyun-core</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.symxns.spring</groupId>
+                <artifactId>sym-spring-boot-starter-aliyun</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.symxns.spring</groupId>
+                <artifactId>sym-spring-boot-starter-doc</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.symxns.spring</groupId>
+                <artifactId>sym-spring-boot-starter-log</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.symxns.spring</groupId>
+                <artifactId>sym-spring-log-core</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.symxns.spring</groupId>
+                <artifactId>sym-spring-boot-starter-minio</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.symxns.spring</groupId>
+                <artifactId>sym-spring-minio-core</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.symxns.spring</groupId>
+                <artifactId>sym-spring-boot-starter-mybatis</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.symxns.spring</groupId>
+                <artifactId>sym-spring-mybatis-core</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.symxns.spring</groupId>
+                <artifactId>sym-spring-boot-starter-oauth-authorization</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.symxns.spring</groupId>
+                <artifactId>sym-spring-boot-starter-oauth-resource</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.symxns.spring</groupId>
+                <artifactId>sym-spring-oauth-core</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.symxns.spring</groupId>
+                <artifactId>sym-spring-boot-starter-redis</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.symxns.spring</groupId>
+                <artifactId>sym-spring-redis-core</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.symxns.sym</groupId>
+                <artifactId>sym-system-core</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.symxns.sym</groupId>
+                <artifactId>sym-system-generator</artifactId>
+                <version>${symxns.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <build>
+        <finalName>${project.name}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${springboot.version}</version>
+                    <configuration>
+                        <compilerArguments>
+                            <arg>-parameters</arg>
+                        </compilerArguments>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <compilerArguments>
+                        <arg>-parameters</arg>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+        </plugins>
+        <defaultGoal>compile</defaultGoal>
+    </build>
+
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <!-- 环境标识，需要与配置文件的名称相对应 -->
+                <profiles.active>local</profiles.active>
+                <!--Nacos配置中心命名空间,用于支持多环境.这里必须使用ID，不能使用名称,默认为空-->
+                <nacos.namespace>149b08cc-0fe3-458d-8426-76e2330d9e85</nacos.namespace>
+            </properties>
+            <!--            <activation>-->
+            <!--                &lt;!&ndash; 默认环境 &ndash;&gt;-->
+            <!--                <activeByDefault>true</activeByDefault>-->
+            <!--            </activation>-->
+        </profile>
+        <profile>
+            <id>vpn</id>
+            <properties>
+                <profiles.active>vpn</profiles.active>
+                <nacos.namespace>32093b91-9afe-45a1-824d-a301e201ed60</nacos.namespace>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+                <nacos.namespace>90ee622f-7a47-471a-9591-3274f5a20d1f</nacos.namespace>
+            </properties>
+        </profile>
+    </profiles>
+
+    <distributionManagement>
+        <repository>
+            <id>ibalbal-maven-nexus</id>
+            <name>ibalbal-maven-nexus</name>
+            <url>http://i.ibalbal.com:46001/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>ibalbal-maven-nexus</id>
+            <name>ibalbal-maven-nexus</name>
+            <url>http://i.ibalbal.com:46001/repository/maven-releases/</url>
+        </repository>
+    </repositories>
+</project>

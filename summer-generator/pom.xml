@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.yujigu</groupId>
+        <artifactId>summer</artifactId>
+        <version>2024</version>
+    </parent>
+
+    <groupId>com.yujigu.summer.generator</groupId>
+    <artifactId>summer-generator</artifactId>
+
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.symxns.sym</groupId>
+            <artifactId>sym-system-generator</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
+        </dependency>
+
+    </dependencies>
+
+
+    <repositories>
+        <repository>
+            <id>ibalbal-maven-nexus</id>
+            <name>ibalbal-maven-nexus</name>
+            <url>http://i.ibalbal.com:46001/repository/maven-releases/</url>
+        </repository>
+    </repositories>
+    <build>
+        <defaultGoal>compile</defaultGoal>
+    </build>
+</project>
