@@ -17,4 +17,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.github.jeffreyning</groupId>
+            <artifactId>mybatisplus-plus</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yujigu.summer.oauth</groupId>
+            <artifactId>oauth-summer-system</artifactId>
+            <version>2024</version>
+        </dependency>
+    </dependencies>
+
 </project>

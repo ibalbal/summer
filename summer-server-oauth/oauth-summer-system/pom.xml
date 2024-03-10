@@ -18,4 +18,97 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.yujigu.summer.common</groupId>
+            <artifactId>summer-common</artifactId>
+            <version>2024</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jeffreyning</groupId>
+            <artifactId>mybatisplus-plus</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.symxns.spring</groupId>
+            <artifactId>sym-spring-boot-starter-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.symxns.spring</groupId>
+            <artifactId>sym-spring-boot-starter-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.symxns.spring</groupId>
+            <artifactId>sym-spring-boot-starter-doc</artifactId>
+        </dependency>
+
+        <!--        数据库连接-->
+        <dependency>
+            <groupId>com.symxns.spring</groupId>
+            <artifactId>sym-spring-boot-starter-mybatis</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.jeffreyning</groupId>
+            <artifactId>mybatisplus-plus</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>9.25.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--    搭建认证服务(Authorization Server) 依赖结束    -->
+        <!-- bootstrap -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+        <!-- 负载均衡-->
+        <!--        # 引入loadbalancer-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-loadbalancer</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+        <!--  alibaba-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
