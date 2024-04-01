@@ -18,6 +18,7 @@
         <module>summer-server-goods</module>
         <module>summer-server-pay</module>
         <module>summer-generator</module>
+        <module>summer-server-iwebot</module>
     </modules>
 
 
@@ -337,12 +338,12 @@
 
     <profiles>
         <profile>
-            <id>local</id>
+            <id>dev</id>
             <properties>
                 <!-- 环境标识，需要与配置文件的名称相对应 -->
-                <profiles.active>local</profiles.active>
+                <profiles.active>dev</profiles.active>
                 <!--Nacos配置中心命名空间,用于支持多环境.这里必须使用ID，不能使用名称,默认为空-->
-                <nacos.namespace>149b08cc-0fe3-458d-8426-76e2330d9e85</nacos.namespace>
+                <nacos.namespace>b412abe4-ae1d-4033-8f95-2bac8a38cff6</nacos.namespace>
             </properties>
             <!--            <activation>-->
             <!--                &lt;!&ndash; 默认环境 &ndash;&gt;-->
@@ -350,17 +351,10 @@
             <!--            </activation>-->
         </profile>
         <profile>
-            <id>vpn</id>
+            <id>prod</id>
             <properties>
-                <profiles.active>vpn</profiles.active>
-                <nacos.namespace>32093b91-9afe-45a1-824d-a301e201ed60</nacos.namespace>
-            </properties>
-        </profile>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <profiles.active>dev</profiles.active>
-                <nacos.namespace>90ee622f-7a47-471a-9591-3274f5a20d1f</nacos.namespace>
+                <profiles.active>prod</profiles.active>
+                <nacos.namespace>ffb5b5d8-b0f4-4cc8-847b-d6f30c677ea2</nacos.namespace>
             </properties>
         </profile>
     </profiles>

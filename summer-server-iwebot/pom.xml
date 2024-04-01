@@ -9,11 +9,14 @@
         <version>2024</version>
     </parent>
 
-    <groupId>com.yujigu.summer.gateway</groupId>
-    <artifactId>summer-server-gateway</artifactId>
+    <groupId>com.yujigu.summer.iwebot</groupId>
+    <artifactId>summer-server-iwebot</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>gateway-summer-admin</module>
+        <module>iwebot-summer-admin</module>
+        <module>iwebot-summer-config</module>
+        <module>iwebot-summer-core</module>
+        <module>iwebot-summer-system</module>
     </modules>
 
     <properties>
@@ -21,6 +24,5 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
 
 </project>

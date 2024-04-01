@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.yujigu.summer.iwebot</groupId>
+        <artifactId>summer-server-iwebot</artifactId>
+        <version>2024</version>
+    </parent>
+
+    <artifactId>iwebot-summer-system</artifactId>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+<!--        <dependency>-->
+<!--            <groupId>com.symxns.spring</groupId>-->
+<!--            <artifactId>sym-spring-oauth-core</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.yujigu</groupId>-->
+<!--            <artifactId>oauth-common</artifactId>-->
+<!--            <version>2024</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.yujigu</groupId>-->
+<!--            <artifactId>crms-common</artifactId>-->
+<!--            <version>2024</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.github.jeffreyning</groupId>-->
+<!--            <artifactId>mybatisplus-plus</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>com.symxns.spring</groupId>
+            <artifactId>sym-spring-boot-starter-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.symxns.spring</groupId>
+            <artifactId>sym-spring-boot-starter-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.symxns.spring</groupId>
+            <artifactId>sym-spring-boot-starter-doc</artifactId>
+        </dependency>
+
+        <!--        数据库连接-->
+        <!--阿里 druid-->
+<!--        <dependency>-->
+<!--            <groupId>com.symxns.spring</groupId>-->
+<!--            <artifactId>sym-spring-boot-starter-mybatis</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.github.jeffreyning</groupId>-->
+<!--            <artifactId>mybatisplus-plus</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+
+<!--        <dependency>-->
+<!--            <groupId>com.nimbusds</groupId>-->
+<!--            <artifactId>nimbus-jose-jwt</artifactId>-->
+<!--            <version>9.25.1</version>-->
+<!--        </dependency>-->
+        <!--    搭建认证服务(Authorization Server) 依赖结束    -->
+        <!-- bootstrap -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+        <!-- 负载均衡-->
+        <!--        # 引入loadbalancer-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-loadbalancer</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--  alibaba-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

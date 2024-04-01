@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: @artifactId@
+  cloud:
+    nacos:
+      discovery:
+        namespace: @nacos.namespace@
+        server-addr: 10.10.1.2:8848,10.10.2.2:8848,10.10.3.2:8848
+      config:
+        namespace: @nacos.namespace@
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+  profiles:
+    active: @profiles.active@
+  main:
+    allow-bean-definition-overriding: true

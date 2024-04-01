@@ -4,17 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.yujigu</groupId>
-        <artifactId>summer</artifactId>
+        <groupId>com.yujigu.summer.iwebot</groupId>
+        <artifactId>summer-server-iwebot</artifactId>
         <version>2024</version>
     </parent>
 
-    <groupId>com.yujigu.summer.gateway</groupId>
-    <artifactId>summer-server-gateway</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>gateway-summer-admin</module>
-    </modules>
+    <artifactId>iwebot-summer-admin</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -22,5 +17,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.yujigu.summer.iwebot</groupId>
+            <artifactId>iwebot-summer-system</artifactId>
+            <version>2024</version>
+        </dependency>
+    </dependencies>
 </project>
