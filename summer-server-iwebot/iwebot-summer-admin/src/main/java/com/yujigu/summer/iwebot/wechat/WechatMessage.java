@@ -1,5 +1,6 @@
 package com.yujigu.summer.iwebot.wechat;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -16,4 +17,10 @@ public class WechatMessage {
     public Long ts;
     public Long type;
     public Xml xml;
+
+    @JsonProperty("is_group")
+    public boolean Group;
+
+    public String roomid;
+
 }

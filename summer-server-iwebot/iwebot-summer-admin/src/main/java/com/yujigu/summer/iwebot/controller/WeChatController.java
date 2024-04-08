@@ -28,12 +28,27 @@ import java.util.Map;
 public class WeChatController {
 
     @PostMapping
-    @SymLog(sysModule = "微信接口",sysType = "微信接口",sysDesc = "微信接口")
-    public Result api(@RequestBody WechatMessage message){
+    @SymLog(sysModule = "微信接口",sysType = "微信接口",sysDesc = "微信接口", result = false)
+    public Result api(@RequestBody String message){
         log.info("api message:{}", message);
-        if (message.getContent().contains("天气")){
+
+        try{
+            WechatMessage wechatMessage = com.alibaba.fastjson2.JSONObject.parseObject(message, WechatMessage.class);
+            if (wechatMessage.getType() == 1){
+                String receiver = wechatMessage.Group ? wechatMessage.getRoomid() : wechatMessage.getSender();
+                cover(wechatMessage.getContent(), receiver);
+            }
+            log.info("---：{}", wechatMessage);
+        }catch (Exception e){
+            log.info("e", e.getMessage());
+        }
+        return Result.ok();
+    }
+
+    public static void cover(String message, String receiver){
+        if (message.contains("天气")){
             String url = "https://wrest.rehi.org/weather";
-            String city = message.getContent().replaceAll("天气", "");
+            String city = message.replaceAll("天气", "");
             if (ObjectUtils.isNotEmpty(city)){
                 url = "https://wrest.rehi.org/weather/" + city;
             }
@@ -42,16 +57,83 @@ public class WeChatController {
             String resultMsg = jsonObject.getStr("text");
             JSONObject param = JSONUtil.createObj();
             param.set("msg", resultMsg);
-            param.set("receiver", "34550230053@chatroom");
+            param.set("receiver", receiver);
             Map<String,String > headers = new HashMap();
             headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
             String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
             log.info(resultbody);
+            return ;
+        }
+
+        if (message.contains("黑丝")){
+            String url = "https://v2.api-m.com/api/heisi";
+            String body = HttpUtil.createGet(url).execute().body();
+            JSONObject jsonObject = JSONUtil.parseObj(body);
+            String resultMsg = jsonObject.getStr("data");
+            JSONObject param = JSONUtil.createObj();
+            param.set("path", resultMsg);
+            param.set("receiver", receiver);
+            Map<String,String > headers = new HashMap();
+            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
+            log.info(resultbody);
+            return ;
+        }
+
+        if (message.contains("白丝")){
+            String url = "https://v2.api-m.com/api/baisi";
+            String body = HttpUtil.createGet(url).execute().body();
+            JSONObject jsonObject = JSONUtil.parseObj(body);
+            String resultMsg = jsonObject.getStr("data");
+            JSONObject param = JSONUtil.createObj();
+            param.set("path", resultMsg);
+            param.set("receiver", receiver);
+            Map<String,String > headers = new HashMap();
+            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
+            log.info(resultbody);
+            return ;
         }
 
 
+        if (message.contains("小姐姐视频")){
+            String url = "www.wudada.online/Api/NewSp";
+            String resultMsg =  HttpUtil.createGet(url).setFollowRedirects(false).executeAsync().header("Location");
+            JSONObject param = JSONUtil.createObj();
+            param.set("path", resultMsg);
+            param.set("receiver", receiver);
+            Map<String,String > headers = new HashMap();
+            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
+            log.info(resultbody);
+            return ;
+        }
 
+        if (message.contains("占卜")){
+            String url = "https://www.hhlqilongzhu.cn/api/tu_yunshi.php";
+            JSONObject param = JSONUtil.createObj();
+            param.set("path", url);
+            param.set("receiver", receiver);
+            Map<String,String > headers = new HashMap();
+            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
+            log.info(resultbody);
+            return ;
+        }
 
+        if (message.contains("60")){
+            String url = "https://www.hhlqilongzhu.cn/api/60s.php";
+            JSONObject param = JSONUtil.createObj();
+            param.set("path", url);
+            param.set("receiver", receiver);
+            Map<String,String > headers = new HashMap();
+            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
+            log.info(resultbody);
+            return ;
+        }
+
+        //
 //
 //        //wxid_oa0rwmnimagm21
 //
@@ -66,6 +148,5 @@ public class WeChatController {
 //        String body = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
 //
 //        log.info(body);
-        return Result.ok();
     }
 }
