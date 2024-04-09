@@ -32,7 +32,7 @@ ENV JAVA_OPTS="\
 #RUN echo "Asia/Shanghai" > /etc/timezone
 
 # 将jar包添加到容器中并更名为app.jar
-ADD summer-iwebot.jar /app.jar
+ADD iwebot-summer-admin.jar /app.jar
 # 运行jar包
 #ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar","--spring.profiles.active=prod"]
 ENTRYPOINT ["java","-jar","app.jar"]
