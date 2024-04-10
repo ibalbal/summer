@@ -35,7 +35,7 @@ public class WeChatWebhookController {
             }
         }
 
-        String msgFormat = "构建通知: %n" +
+        String msgFormat = "构建通知 %n%n" +
                 "项目名称: %s%n" +
                 "当前状态: %s%n";
         if (!ObjectUtils.isEmpty(commit)) {
