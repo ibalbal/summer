@@ -47,8 +47,8 @@ public class WeChatWebhookController {
         }
         String msg;
         String msgFormat ;
-        if (!ObjectUtils.isEmpty(commit)) {
-            msgFormat =  "构建通知 %n%n" +
+        if (ObjectUtils.isEmpty(commit)) {
+            msgFormat =  "构建通知 %n" +
                     "项目名称: %s%n" +
                     "当前状态: %s%n" +
                     "执行时间: %s";
@@ -58,7 +58,7 @@ public class WeChatWebhookController {
                     message.getTask().getStatusName(),
                     formattedDateTime);
         }else {
-            msgFormat  =  "构建通知 %n%n" +
+            msgFormat  =  "构建通知 %n" +
                     "项目名称: %s%n" +
                     "当前状态: %s%n" +
                     "提交信息: %s%n" +
