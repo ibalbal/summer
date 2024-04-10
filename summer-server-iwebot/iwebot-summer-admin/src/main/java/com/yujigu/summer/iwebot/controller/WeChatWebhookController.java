@@ -20,31 +20,40 @@ import java.util.Map;
 @RequestMapping("/webhook/api")
 public class WeChatWebhookController {
 
-    @Value(value = "${iwebot.sender}")
-    public String iwebotSender;
+//    @Value(value = "${iwebot.sender}")
+//    public String iwebotSender;
 
     @PostMapping("/{sendId}")
     @SymLog(sysModule = "微信接口",sysType = "微信接口",sysDesc = "微信接口", result = false)
     public void api(@PathVariable(name = "sendId") String sender,  @RequestBody Event message){
         log.info("event:{}",message);
-        String commit = "【提交未变更】";
+        String commit = "";
         for (GlobalParam globalParam : message.getGlobalParams()) {
             if (globalParam.getKey().equals("CI_COMMIT_TITLE")){
                 commit = globalParam.getValue();
                 break;
             }
         }
-        // 格式化输出所需信息
-        String msg = String.format(
-                        "构建通知: %n" +
-                        "项目名称: %s%n" +
-                        "当前状态: %s%n" +
-//                        "运行详情: %s%n" +
-                        "提交信息: %s",
-                message.getTask().getPipelineName(),
-                message.getTask().getStatusName(),
-//                message.getTask().getPipelineUrl(),
-                commit);
+
+        String msg;
+        if (ObjectUtils.isEmpty(commit)){
+            // 格式化输出所需信息
+            msg = String.format(
+                    "构建通知: %n" +
+                            "项目名称: %s%n" +
+                            "当前状态: %s%n" +
+                            message.getTask().getPipelineName(),
+                    message.getTask().getStatusName());
+        }else {
+            msg =  String.format(
+                    "构建通知: %n" +
+                            "项目名称: %s%n" +
+                            "当前状态: %s%n" +
+                            "提交信息: %s",
+                    message.getTask().getPipelineName(),
+                    message.getTask().getStatusName(),
+                    commit);
+        }
         JSONObject param = JSONUtil.createObj();
         param.set("msg", msg);
         param.set("receiver", sender);

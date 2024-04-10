@@ -48,7 +48,9 @@ public class WeChatController {
 
     public static void update(WechatMessage wechatMessage, String message, String receiver, boolean isGroup){
         if (wechatMessage.getSender().equals("wxid_oa0rwmnimagm21") && wechatMessage.getContent().equals("更新")){
-            String body = HttpUtil.createPost("http://flow-openapi.aliyun.com/pipeline/webhook/4TcgVAxeFsNWlrrjhLad").body("{}").execute().body();
+            JSONObject webhookParams = JSONUtil.createObj();
+            webhookParams.put("sender", receiver);
+            String body = HttpUtil.createPost("http://flow-openapi.aliyun.com/pipeline/webhook/4TcgVAxeFsNWlrrjhLad").body(webhookParams.toString()).execute().body();
             JSONObject jsonObject = JSONUtil.parseObj(body);
             Boolean successful = jsonObject.getBool("successful", false);
 
