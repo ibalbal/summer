@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +35,8 @@ public class WeChatController {
             WechatMessage wechatMessage = com.alibaba.fastjson2.JSONObject.parseObject(message, WechatMessage.class);
             if (wechatMessage.getType() == 1){
                 String receiver = wechatMessage.Group ? wechatMessage.getRoomid() : wechatMessage.getSender();
+                update(wechatMessage, wechatMessage.getContent(), receiver, wechatMessage.Group);
+
                 cover(wechatMessage.getContent(), receiver);
             }
             log.info("---：{}", wechatMessage);
@@ -45,7 +46,32 @@ public class WeChatController {
         return Result.ok();
     }
 
+    public static void update(WechatMessage wechatMessage, String message, String receiver, boolean isGroup){
+        if (wechatMessage.getSender().equals("wxid_oa0rwmnimagm21") && wechatMessage.getContent().equals("更新")){
+            String body = HttpUtil.createPost("http://flow-openapi.aliyun.com/pipeline/webhook/4TcgVAxeFsNWlrrjhLad").body("{}").execute().body();
+            JSONObject jsonObject = JSONUtil.parseObj(body);
+            Boolean successful = jsonObject.getBool("successful", false);
+
+            JSONObject param = JSONUtil.createObj();
+
+            String resultMsg;
+            if (successful){
+                resultMsg = "开始更新机器人后台...";
+            }else {
+                resultMsg ="更新错误："+ jsonObject.getStr("errorMsg");
+            }
+            param.set("msg", resultMsg);
+            param.set("receiver", receiver);
+            Map<String,String > headers = new HashMap();
+            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
+            log.info(resultbody);
+        }
+    }
+
     public static void cover(String message, String receiver){
+
+
         if (message.contains("天气")){
             String url = "https://wrest.rehi.org/weather";
             String city = message.replaceAll("天气", "");
@@ -120,6 +146,7 @@ public class WeChatController {
             log.info(resultbody);
             return ;
         }
+
 
     }
 }

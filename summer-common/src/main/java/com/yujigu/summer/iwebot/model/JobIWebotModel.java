@@ -1,4 +1,4 @@
-package com.yujigu.summer.iwebot.job.model;
+package com.yujigu.summer.iwebot.model;
 
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;

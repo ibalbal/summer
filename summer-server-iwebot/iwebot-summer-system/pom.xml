@@ -113,6 +113,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.yujigu.summer.common</groupId>
+            <artifactId>summer-common</artifactId>
+            <version>2024</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>
