@@ -19,7 +19,7 @@ public class JobIWebot {
     @Autowired
     public JobIWebotModelTask60 task60;
 
-    @Scheduled(cron = "50 29 9 * * *")
+    @Scheduled(cron = "55 29 9 * * *")
     public void job60(){
 
         for (String receiver : task60.getReceivers()) {

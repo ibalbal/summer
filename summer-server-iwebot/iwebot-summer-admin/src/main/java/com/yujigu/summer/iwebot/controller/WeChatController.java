@@ -92,62 +92,62 @@ public class WeChatController {
             log.info(resultbody);
             return ;
         }
-
-        if (message.equals("黑丝")){
-            String url = "https://v2.api-m.com/api/heisi";
-            String body = HttpUtil.createGet(url).execute().body();
-            JSONObject jsonObject = JSONUtil.parseObj(body);
-            String resultMsg = jsonObject.getStr("data");
-            JSONObject param = JSONUtil.createObj();
-            param.set("path", resultMsg);
-            param.set("receiver", receiver);
-            Map<String,String > headers = new HashMap();
-            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
-            log.info(resultbody);
-            return ;
-        }
-
-        if (message.equals("白丝")){
-            String url = "https://v2.api-m.com/api/baisi";
-            String body = HttpUtil.createGet(url).execute().body();
-            JSONObject jsonObject = JSONUtil.parseObj(body);
-            String resultMsg = jsonObject.getStr("data");
-            JSONObject param = JSONUtil.createObj();
-            param.set("path", resultMsg);
-            param.set("receiver", receiver);
-            Map<String,String > headers = new HashMap();
-            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
-            log.info(resultbody);
-            return ;
-        }
-
-
-        if (message.equals("小姐姐视频")){
-            String url = "www.wudada.online/Api/NewSp";
-            String resultMsg =  HttpUtil.createGet(url).setFollowRedirects(false).executeAsync().header("Location");
-            JSONObject param = JSONUtil.createObj();
-            param.set("path", resultMsg);
-            param.set("receiver", receiver);
-            Map<String,String > headers = new HashMap();
-            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
-            log.info(resultbody);
-            return ;
-        }
-
-        if (message.equals("占卜")){
-            String url = "https://www.hhlqilongzhu.cn/api/tu_yunshi.php";
-            JSONObject param = JSONUtil.createObj();
-            param.set("path", url);
-            param.set("receiver", receiver);
-            Map<String,String > headers = new HashMap();
-            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
-            log.info(resultbody);
-            return ;
-        }
+//
+//        if (message.equals("黑丝")){
+//            String url = "https://v2.api-m.com/api/heisi";
+//            String body = HttpUtil.createGet(url).execute().body();
+//            JSONObject jsonObject = JSONUtil.parseObj(body);
+//            String resultMsg = jsonObject.getStr("data");
+//            JSONObject param = JSONUtil.createObj();
+//            param.set("path", resultMsg);
+//            param.set("receiver", receiver);
+//            Map<String,String > headers = new HashMap();
+//            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+//            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
+//            log.info(resultbody);
+//            return ;
+//        }
+//
+//        if (message.equals("白丝")){
+//            String url = "https://v2.api-m.com/api/baisi";
+//            String body = HttpUtil.createGet(url).execute().body();
+//            JSONObject jsonObject = JSONUtil.parseObj(body);
+//            String resultMsg = jsonObject.getStr("data");
+//            JSONObject param = JSONUtil.createObj();
+//            param.set("path", resultMsg);
+//            param.set("receiver", receiver);
+//            Map<String,String > headers = new HashMap();
+//            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+//            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
+//            log.info(resultbody);
+//            return ;
+//        }
+//
+//
+//        if (message.equals("小姐姐视频")){
+//            String url = "www.wudada.online/Api/NewSp";
+//            String resultMsg =  HttpUtil.createGet(url).setFollowRedirects(false).executeAsync().header("Location");
+//            JSONObject param = JSONUtil.createObj();
+//            param.set("path", resultMsg);
+//            param.set("receiver", receiver);
+//            Map<String,String > headers = new HashMap();
+//            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+//            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
+//            log.info(resultbody);
+//            return ;
+//        }
+//
+//        if (message.equals("占卜")){
+//            String url = "https://www.hhlqilongzhu.cn/api/tu_yunshi.php";
+//            JSONObject param = JSONUtil.createObj();
+//            param.set("path", url);
+//            param.set("receiver", receiver);
+//            Map<String,String > headers = new HashMap();
+//            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+//            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
+//            log.info(resultbody);
+//            return ;
+//        }
 
 
     }
