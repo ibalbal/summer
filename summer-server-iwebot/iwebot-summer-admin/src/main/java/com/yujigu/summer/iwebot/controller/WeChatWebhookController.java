@@ -35,25 +35,18 @@ public class WeChatWebhookController {
             }
         }
 
-        String msg;
-        if (ObjectUtils.isEmpty(commit)){
-            // 格式化输出所需信息
-            msg = String.format(
-                    "构建通知: %n" +
-                            "项目名称: %s%n" +
-                            "当前状态: %s%n" +
-                            message.getTask().getPipelineName(),
-                    message.getTask().getStatusName());
-        }else {
-            msg =  String.format(
-                    "构建通知: %n" +
-                            "项目名称: %s%n" +
-                            "当前状态: %s%n" +
-                            "提交信息: %s",
-                    message.getTask().getPipelineName(),
-                    message.getTask().getStatusName(),
-                    commit);
+        String msgFormat = "构建通知: %n" +
+                "项目名称: %s%n" +
+                "当前状态: %s%n";
+        if (!ObjectUtils.isEmpty(commit)) {
+            msgFormat += "提交信息: %s";
         }
+
+        String msg = String.format(msgFormat,
+                message.getTask().getPipelineName(),
+                message.getTask().getStatusName(),
+                (ObjectUtils.isEmpty(commit) ? "" : commit));
+
         JSONObject param = JSONUtil.createObj();
         param.set("msg", msg);
         param.set("receiver", sender);
