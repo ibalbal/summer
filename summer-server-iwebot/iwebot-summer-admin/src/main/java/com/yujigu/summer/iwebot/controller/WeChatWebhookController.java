@@ -12,6 +12,8 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +28,15 @@ public class WeChatWebhookController {
     @PostMapping("/{sendId}")
     @SymLog(sysModule = "微信接口",sysType = "微信接口",sysDesc = "微信接口", result = false)
     public void api(@PathVariable(name = "sendId") String sender,  @RequestBody Event message){
+
+        // 获取当前时间
+        LocalDateTime currentTime = LocalDateTime.now();
+        // 定义日期时间格式
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        // 格式化当前时间
+        String formattedDateTime = currentTime.format(formatter);
+
+
         log.info("event:{}",message);
         String commit = "";
         for (GlobalParam globalParam : message.getGlobalParams()) {
@@ -34,18 +45,30 @@ public class WeChatWebhookController {
                 break;
             }
         }
-
-        String msgFormat = "构建通知 %n%n" +
-                "项目名称: %s%n" +
-                "当前状态: %s%n";
+        String msg;
+        String msgFormat ;
         if (!ObjectUtils.isEmpty(commit)) {
-            msgFormat += "提交信息: %s";
-        }
+            msgFormat =  "构建通知 %n%n" +
+                    "项目名称: %s%n" +
+                    "当前状态: %s%n" +
+                    "执行时间: %s";
 
-        String msg = String.format(msgFormat,
-                message.getTask().getPipelineName(),
-                message.getTask().getStatusName(),
-                (ObjectUtils.isEmpty(commit) ? "" : commit));
+            msg = String.format(msgFormat,
+                    message.getTask().getPipelineName(),
+                    message.getTask().getStatusName(),
+                    formattedDateTime);
+        }else {
+            msgFormat  =  "构建通知 %n%n" +
+                    "项目名称: %s%n" +
+                    "当前状态: %s%n" +
+                    "提交信息: %s%n" +
+                    "执行时间: %s";
+            msg = String.format(msgFormat,
+                    message.getTask().getPipelineName(),
+                    message.getTask().getStatusName(),
+                    commit,
+                    formattedDateTime);
+        }
 
         JSONObject param = JSONUtil.createObj();
         param.set("msg", msg);
