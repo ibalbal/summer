@@ -95,39 +95,51 @@ public class WeChatController {
 
         if (message.contains("搜歌")){
             String url =  "https://www.hhlqilongzhu.cn/api/dg_qqmusic_SQ.php?num=10&msg=SONGNAME&n=NO&type=TYPE";
-            String messageConver = message.replaceAll(" ", "@");
-            String[] content = messageConver.split("@");
+            String[] content = message.split("\\s+");
             String songName = content[1];
-            if (content.length >= 2){
+            if (content.length > 2){
                 String no = content[2];
                 String reqUrl = url.replace("SONGNAME", songName).replace("NO", no).replace("TYPE", "json");
                 String body = HttpUtil.createGet(reqUrl).execute().body();
                 JSONObject jsonObject = JSONUtil.parseObj(body);
-                String song_name = jsonObject.getStr("song_name");
-                String song_singer = jsonObject.getStr("song_singer");
-                String quality = jsonObject.getStr("quality");
-                String cover = jsonObject.getStr("cover");
-                String link = jsonObject.getStr("link");
-                String music_url = jsonObject.getStr("music_url");
+                if (jsonObject.getInt("code") != 200) {
+                    JSONObject param = JSONUtil.createObj();
+                    param.set("msg", "获取数据失败");
+                    param.set("receiver", receiver);
+                    Map<String,String > headers = new HashMap();
+                    headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+                    String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
+                    log.info(resultbody);
+                }else {
+                    JSONObject data =  jsonObject.getJSONObject("data");
+                    String song_name = data.getStr("song_name");
+                    String song_singer = data.getStr("song_singer");
+                    String quality = data.getStr("quality");
+                    String cover = data.getStr("cover");
+                    String link = data.getStr("link");
+                    String music_url = data.getStr("music_url");
 
-                JSONObject param = JSONUtil.createObj();
-                param.set("url", link);
-                param.set("title", song_name );
-                param.set("name",  song_singer);
-                param.set("thumburl", cover);
-                param.set("digest", quality);
-                param.set("receiver", receiver);
-                Map<String,String > headers = new HashMap();
-                headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-                String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_rich_text").body(param.toString()).addHeaders(headers).execute().body();
-                log.info(resultbody);
+                    JSONObject param = JSONUtil.createObj();
+                    param.set("url", link);
+                    param.set("title", song_name );
+                    param.set("name",  quality);
+                    param.set("thumburl", cover);
+                    param.set("digest", song_singer);
+                    param.set("receiver", receiver);
+                    Map<String,String > headers = new HashMap();
+                    headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+                    String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_rich_text").body(param.toString()).addHeaders(headers).execute().body();
+                    log.info(resultbody);
+                }
+
                 return;
             }else {
                 String reqUrl = url.replace("SONGNAME", songName).replace("NO", "").replace("TYPE", "");
                 String resultMsg = HttpUtil.createGet(reqUrl).execute().body();
-                resultMsg += "%n";
+                resultMsg += "\n\n";
+
                 resultMsg += "选择指定歌曲：搜歌 "+songName+" " + "1";
-                resultMsg += "%n";
+                resultMsg += "\n";
                 resultMsg += "其中1为歌曲序号";
                 JSONObject param = JSONUtil.createObj();
                 param.set("msg", resultMsg);
