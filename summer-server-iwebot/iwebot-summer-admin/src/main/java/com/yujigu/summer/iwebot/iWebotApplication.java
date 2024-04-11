@@ -26,7 +26,7 @@ public class iWebotApplication {
             param.set("receiver", "机器人后台启动成功");
             Map<String,String > headers = new HashMap();
             headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-            HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_text").body(param.toString()).addHeaders(headers).execute().body();
+            HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
         }
 
 }
