@@ -72,9 +72,7 @@ public class WeChatController {
     }
 
     public static void cover(String message, String receiver){
-
-
-        if (message.contains("天气")){
+        if (message.endsWith("天气")){
             String url = "https://wrest.rehi.org/weather";
             String city = message.replaceAll("天气", "");
             if (ObjectUtils.isNotEmpty(city)){
@@ -84,7 +82,7 @@ public class WeChatController {
             JSONObject jsonObject = JSONUtil.parseObj(body);
             String resultMsg = jsonObject.getStr("text");
             JSONObject param = JSONUtil.createObj();
-            param.set("msg", resultMsg);
+            param.set("msg", resultMsg.replaceAll("；","\n"));
             param.set("receiver", receiver);
             Map<String,String > headers = new HashMap();
             headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
