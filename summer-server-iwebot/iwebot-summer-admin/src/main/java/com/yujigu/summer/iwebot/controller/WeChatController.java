@@ -1,6 +1,7 @@
 package com.yujigu.summer.iwebot.controller;
 
 import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.symxns.spring.log.annotation.SymLog;
@@ -150,6 +151,50 @@ public class WeChatController {
             }
 
         }
+
+        if ("短剧".contains(message)){
+            StringBuilder resultMsg = new StringBuilder();
+            try {
+                String url = "https://api.djcat.sbs/api/movies?page=1&limit=5&name=NAME";
+                String data = message.replaceAll("短剧", "");
+                if (ObjectUtils.isNotEmpty(data)){
+                    url.replace("NAME", data);
+                }
+                String body = HttpUtil.createGet(url).execute().body();
+                JSONObject jsonObject = JSONUtil.parseObj(body);
+                Integer code = jsonObject.getInt("code");
+                if (code != 0){
+                    resultMsg = new StringBuilder(jsonObject.getStr("message"));
+                }else {
+                    resultMsg.append("温馨提示：");
+                    resultMsg.append("所有资源来源于网络，侵删");
+                    resultMsg.append("\n");
+                    resultMsg.append("---------------------");
+                    JSONObject moviesData = jsonObject.getJSONObject("data");
+                    if (moviesData.getInt("total") == 0){
+                        resultMsg = new StringBuilder("没有找到相关短剧");
+                    }else {
+                        JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("rows");
+
+                        for (int i = 0; i < jsonArray.size(); i++) {
+                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                            resultMsg.append(jsonObject1.getStr("name")).append("：").append(jsonObject1.getStr("link")).append("\n");
+                        }
+                    }
+                }
+            }catch (Exception e){
+                resultMsg = new StringBuilder("系统异常");
+            }
+            JSONObject param = JSONUtil.createObj();
+            param.set("msg", resultMsg);
+            param.set("receiver", receiver);
+            Map<String,String > headers = new HashMap();
+            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
+            log.info(resultbody);
+            return;
+        }
+
 //
 //        if (message.equals("黑丝")){
 //            String url = "https://v2.api-m.com/api/heisi";
