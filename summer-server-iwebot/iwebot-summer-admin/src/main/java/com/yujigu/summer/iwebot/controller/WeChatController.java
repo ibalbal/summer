@@ -6,9 +6,11 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.symxns.spring.log.annotation.SymLog;
 import com.symxns.sym.core.result.Result;
+import com.yujigu.summer.iwebot.service.GcwService;
 import com.yujigu.summer.iwebot.wechat.WechatMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,9 @@ import java.util.Map;
 @RequestMapping("/callback/api")
 public class WeChatController {
 
+    @Autowired
+    private GcwService gcwService;
+
     @PostMapping
     @SymLog(sysModule = "微信接口",sysType = "微信接口",sysDesc = "微信接口", result = false)
     public Result api(@RequestBody String message){
@@ -40,6 +45,7 @@ public class WeChatController {
                 update(wechatMessage, wechatMessage.getContent(), receiver, wechatMessage.Group);
 
                 cover(wechatMessage.getContent(), receiver);
+                gcw(wechatMessage.getContent(), receiver);
             }
             log.info("---：{}", wechatMessage);
         }catch (Exception e){
@@ -212,6 +218,7 @@ public class WeChatController {
             return;
         }
 
+
 //
 //        if (message.equals("黑丝")){
 //            String url = "https://v2.api-m.com/api/heisi";
@@ -273,6 +280,46 @@ public class WeChatController {
     }
 
 
+    public void gcw(String message, String receiver){
+        if (message.startsWith("搜舞")){
+            StringBuilder msg = new StringBuilder();
+
+            String data = message.replaceAll("搜舞", "").trim();
+
+            if (ObjectUtils.isNotEmpty(data)) {
+                msg.append( gcwService.gcw(data));
+            }else {
+                msg.append("未输入歌曲名");
+            }
+
+            JSONObject param = JSONUtil.createObj();
+            param.set("msg", msg);
+            param.set("receiver", receiver);
+            Map<String,String > headers = new HashMap();
+            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
+            log.info(resultbody);
+            return ;
+        }
+        if (message.startsWith("下舞")){
+            StringBuilder msg = new StringBuilder();
+            String data = message.replaceAll("下舞", "").trim();
+            if (ObjectUtils.isNotEmpty(data)) {
+                msg.append(gcwService.gcwMp3(data));
+            }else {
+                msg.append("未输入歌曲链接");
+            }
+
+            JSONObject param = JSONUtil.createObj();
+            param.set("msg", msg);
+            param.set("receiver", receiver);
+            Map<String,String > headers = new HashMap();
+            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
+            log.info(resultbody);
+            return ;
+        }
+    }
 
 
 
