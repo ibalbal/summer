@@ -99,9 +99,9 @@ public class WeChatController {
             return ;
         }
 
-        if (message.startsWith("搜歌")){
+        if (message.startsWith("点歌")){
             String url =  "http://mobilecdn.kugou.com/api/v3/search/song?format=json&keyword=SONGNAME&page=1&pagesize=1&showtype=1";
-            String songName = message.replace("搜歌", "");
+            String songName = message.replace("点歌", "");
             String reqUrl = url.replace("SONGNAME", songName);
             String body = HttpUtil.createGet(reqUrl).execute().body();
             JSONObject jsonObject = JSONUtil.parseObj(body);
