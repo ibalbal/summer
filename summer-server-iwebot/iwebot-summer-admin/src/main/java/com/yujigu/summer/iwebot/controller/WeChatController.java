@@ -99,64 +99,54 @@ public class WeChatController {
             return ;
         }
 
-        if (message.contains("搜歌")){
-            String url =  "https://www.hhlqilongzhu.cn/api/dg_qqmusic_SQ.php?num=10&msg=SONGNAME&n=NO&type=TYPE";
-            String[] content = message.split("\\s+");
-            String songName = content[1];
-            if (content.length > 2){
-                String no = content[2];
-                String reqUrl = url.replace("SONGNAME", songName).replace("NO", no).replace("TYPE", "json");
-                String body = HttpUtil.createGet(reqUrl).execute().body();
-                JSONObject jsonObject = JSONUtil.parseObj(body);
-                if (jsonObject.getInt("code") != 200) {
-                    JSONObject param = JSONUtil.createObj();
-                    param.set("msg", "获取数据失败");
-                    param.set("receiver", receiver);
-                    Map<String,String > headers = new HashMap();
-                    headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-                    String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
-                    log.info(resultbody);
-                }else {
-                    JSONObject data =  jsonObject.getJSONObject("data");
-                    String song_name = data.getStr("song_name");
-                    String song_singer = data.getStr("song_singer");
-                    String quality = data.getStr("quality");
-                    String cover = data.getStr("cover");
-                    String link = data.getStr("link");
-                    String music_url = data.getStr("music_url");
-
-                    JSONObject param = JSONUtil.createObj();
-                    param.set("url", link);
-                    param.set("title", song_name );
-                    param.set("name",  quality);
-                    param.set("thumburl", cover);
-                    param.set("digest", song_singer);
-                    param.set("receiver", receiver);
-                    Map<String,String > headers = new HashMap();
-                    headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-                    String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_rich_text").body(param.toString()).addHeaders(headers).execute().body();
-                    log.info(resultbody);
-                }
-
-                return;
-            }else {
-                String reqUrl = url.replace("SONGNAME", songName).replace("NO", "").replace("TYPE", "");
-                String resultMsg = HttpUtil.createGet(reqUrl).execute().body();
-                resultMsg += "\n\n";
-
-                resultMsg += "选择指定歌曲：搜歌 "+songName+" " + "1";
-                resultMsg += "\n";
-                resultMsg += "其中1为歌曲序号";
+        if (message.startsWith("搜歌")){
+            String url =  "http://mobilecdn.kugou.com/api/v3/search/song?format=json&keyword=SONGNAME&page=1&pagesize=1&showtype=1";
+            String songName = message.replace("搜歌", "");
+            String reqUrl = url.replace("SONGNAME", songName);
+            String body = HttpUtil.createGet(reqUrl).execute().body();
+            JSONObject jsonObject = JSONUtil.parseObj(body);
+            if (jsonObject.getInt("status") != 1) {
                 JSONObject param = JSONUtil.createObj();
-                param.set("msg", resultMsg);
+                param.set("msg", "获取数据失败"+jsonObject.getStr("error"));
                 param.set("receiver", receiver);
                 Map<String,String > headers = new HashMap();
                 headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
                 String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
                 log.info(resultbody);
+            }else {
+                JSONObject data =  jsonObject.getJSONObject("data");
+                JSONArray dataInfos = data.getJSONArray("info");
+                JSONObject infosJSONObject = dataInfos.getJSONObject(0);
+                if (ObjectUtils.isEmpty(infosJSONObject)){
+                    JSONObject param = JSONUtil.createObj();
+                    param.set("msg", "未搜到相关歌曲");
+                    param.set("receiver", receiver);
+                    Map<String,String > headers = new HashMap();
+                    headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+                    String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
+                    log.info(resultbody);
+                    return;
+                }
+
+                String song_name = infosJSONObject.getStr("songname");
+                String song_singer = infosJSONObject.getStr("singername");
+                String quality = infosJSONObject.getStr("album_name");
+                String cover = infosJSONObject.getStr("cover");
+                String link = infosJSONObject.getStr("http://music.ibalbal.com/#/?type=kg&hash="+infosJSONObject.getStr("hash"));
+
+                JSONObject param = JSONUtil.createObj();
+                param.set("url", link);
+                param.set("title", song_name );
+                param.set("name",  quality);
+                param.set("thumburl", cover);
+                param.set("digest", song_singer);
+                param.set("receiver", receiver);
+                Map<String,String > headers = new HashMap();
+                headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+                String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_rich_text").body(param.toString()).addHeaders(headers).execute().body();
+                log.info(resultbody);
                 return;
             }
-
         }
 
         if (message.startsWith("短剧")){
