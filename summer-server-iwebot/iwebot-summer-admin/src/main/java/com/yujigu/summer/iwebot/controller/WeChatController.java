@@ -130,10 +130,9 @@ public class WeChatController {
 
                 String song_name = infosJSONObject.getStr("songname");
                 String song_singer = infosJSONObject.getStr("singername");
-                String quality = infosJSONObject.getStr("album_name");
-                String cover = infosJSONObject.getStr("cover");
-                String link = infosJSONObject.getStr("http://music.ibalbal.com/#/?type=kg&hash="+infosJSONObject.getStr("hash"));
-
+                String quality = "即音乐";
+                String cover = "https://minio.ibalbal.com:800/wx-mini/music.png";
+                String link = "http://music.ibalbal.com/#/?type=kg&hash="+ infosJSONObject.getStr("hash");
                 JSONObject param = JSONUtil.createObj();
                 param.set("url", link);
                 param.set("title", song_name );
@@ -145,7 +144,6 @@ public class WeChatController {
                 headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
                 String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_rich_text").body(param.toString()).addHeaders(headers).execute().body();
                 log.info(resultbody);
-                return;
             }
         }
 
