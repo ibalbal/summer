@@ -3,6 +3,7 @@ package com.yujigu.summer.iwebot.service.impl;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.symxns.sym.core.result.ManageException;
+import com.symxns.sym.core.utils.BeanCopyUtils;
 import com.yujigu.summer.iwebot.MusicStatus;
 import com.yujigu.summer.iwebot.service.MusicService;
 import com.yujigu.summer.music.entity.MusicData;
@@ -18,7 +19,7 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public MusicStatus musicService() {
-        return musicStatus;
+        return BeanCopyUtils.copyObject(musicStatus, MusicStatus.class);
     }
 
     @Override
