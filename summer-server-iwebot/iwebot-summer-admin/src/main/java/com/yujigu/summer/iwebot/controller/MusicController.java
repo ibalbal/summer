@@ -1,6 +1,7 @@
 package com.yujigu.summer.iwebot.controller;
 
 import com.symxns.sym.core.result.Result;
+import com.yujigu.summer.iwebot.MusicStatus;
 import com.yujigu.summer.iwebot.service.MusicService;
 import com.yujigu.summer.music.entity.MusicData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,12 @@ public class MusicController {
 
     @Autowired
     private MusicService musicService;
+
+    @GetMapping("/status")
+    public Result<MusicStatus> status(){
+        return Result.ok(musicService.musicService());
+    }
+
 
     /**
      * 获取音乐详情

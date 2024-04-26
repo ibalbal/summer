@@ -1,15 +1,25 @@
 package com.yujigu.summer.iwebot.service.impl;
 
 import cn.hutool.http.HttpUtil;
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.symxns.sym.core.result.ManageException;
+import com.yujigu.summer.iwebot.MusicStatus;
 import com.yujigu.summer.iwebot.service.MusicService;
 import com.yujigu.summer.music.entity.MusicData;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 @Service
 public class MusicServiceImpl implements MusicService {
+
+
+    @Autowired
+    private MusicStatus musicStatus;
+
+
+    @Override
+    public MusicStatus musicService() {
+        return musicStatus;
+    }
 
     @Override
     public MusicData details(String type, String hash) {
