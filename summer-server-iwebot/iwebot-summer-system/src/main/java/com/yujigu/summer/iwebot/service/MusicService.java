@@ -1,5 +1,7 @@
 package com.yujigu.summer.iwebot.service;
 
+import com.yujigu.summer.iwebot.MusicParams;
+import com.yujigu.summer.iwebot.MusicRedirect;
 import com.yujigu.summer.iwebot.MusicStatus;
 import com.yujigu.summer.music.entity.MusicData;
 
@@ -23,4 +25,5 @@ public interface MusicService {
      */
     MusicData details(String type, String hash);
 
+    MusicRedirect musicRedirect(MusicParams params);
 }

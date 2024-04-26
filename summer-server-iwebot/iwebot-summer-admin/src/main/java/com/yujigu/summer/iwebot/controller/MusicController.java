@@ -1,14 +1,13 @@
 package com.yujigu.summer.iwebot.controller;
 
 import com.symxns.sym.core.result.Result;
+import com.yujigu.summer.iwebot.MusicParams;
+import com.yujigu.summer.iwebot.MusicRedirect;
 import com.yujigu.summer.iwebot.MusicStatus;
 import com.yujigu.summer.iwebot.service.MusicService;
 import com.yujigu.summer.music.entity.MusicData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/music")
@@ -20,6 +19,12 @@ public class MusicController {
     @GetMapping("/status")
     public Result<MusicStatus> status(){
         return Result.ok(musicService.musicService());
+    }
+
+    //请求重定向
+    @PostMapping("/redirect")
+    public Result<MusicRedirect> redirect(@RequestBody MusicParams params){
+        return Result.ok(musicService.musicRedirect(params));
     }
 
 

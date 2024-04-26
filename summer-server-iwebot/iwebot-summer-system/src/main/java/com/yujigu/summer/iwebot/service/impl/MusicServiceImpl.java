@@ -4,6 +4,8 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.symxns.sym.core.result.ManageException;
 import com.symxns.sym.core.utils.BeanCopyUtils;
+import com.yujigu.summer.iwebot.MusicParams;
+import com.yujigu.summer.iwebot.MusicRedirect;
 import com.yujigu.summer.iwebot.MusicStatus;
 import com.yujigu.summer.iwebot.service.MusicService;
 import com.yujigu.summer.music.entity.MusicData;
@@ -16,10 +18,19 @@ public class MusicServiceImpl implements MusicService {
     @Autowired
     private MusicStatus musicStatus;
 
+    @Autowired
+    private MusicRedirect musicRedirect;
 
     @Override
     public MusicStatus musicService() {
         return BeanCopyUtils.copyObject(musicStatus, MusicStatus.class);
+    }
+
+    @Override
+    public MusicRedirect musicRedirect(MusicParams params) {
+        MusicRedirect redirect = BeanCopyUtils.copyObject(musicRedirect, MusicRedirect.class);
+        redirect.setUrl(redirect.getUrl().replaceAll("PARAMS", params.getContent()));
+        return redirect;
     }
 
     @Override
@@ -38,4 +49,6 @@ public class MusicServiceImpl implements MusicService {
         MusicData musicData = JSONObject.parseObject(body, MusicData.class);
         return musicData;
     }
+
+
 }

@@ -26,6 +26,12 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-context</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.yujigu.summer.common</groupId>
+            <artifactId>summer-common</artifactId>
+            <version>2024</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>
