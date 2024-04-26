@@ -35,7 +35,7 @@ public class MusicController {
      * @return
      */
     @GetMapping("/details")
-    public Result<MusicData> music(@RequestParam("type") String type, @RequestParam("hash") String hash){
+    public Result<MusicData> music(@RequestParam(value = "type", required = false) String type, @RequestParam("hash") String hash){
         return Result.ok(musicService.details(type, hash));
     }
 
