@@ -4,13 +4,16 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.symxns.sym.core.result.ManageException;
 import com.symxns.sym.core.utils.BeanCopyUtils;
+import com.symxns.sym.core.utils.UserAgentUtil;
 import com.yujigu.summer.iwebot.MusicParams;
 import com.yujigu.summer.iwebot.MusicRedirect;
 import com.yujigu.summer.iwebot.MusicStatus;
 import com.yujigu.summer.iwebot.service.MusicService;
 import com.yujigu.summer.music.entity.MusicData;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+@Slf4j
 @Service
 public class MusicServiceImpl implements MusicService {
 
@@ -66,8 +69,9 @@ public class MusicServiceImpl implements MusicService {
 
         String musicUrl = "http://music.ibalbal.com/api/song/url?hash=HASH";
         String reqMusicUrl = musicUrl.replace("HASH", hash);
-        String musicBbody = HttpUtil.createGet(reqMusicUrl).execute().body();
-        JSONObject musicJSON = JSONObject.parse(musicBbody);
+        String musicBody = HttpUtil.createGet(reqMusicUrl).addHeaders(UserAgentUtil.getHeaders()).execute().body();
+        log.info("musicBody:{}", musicBody);
+        JSONObject musicJSON = JSONObject.parse(musicBody);
         //音乐
         String url = musicJSON.getJSONArray("url").getString(0);
 
