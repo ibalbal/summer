@@ -17,8 +17,8 @@ public class JobMusic {
     public void kugouVip(){
         log.info("开始领取酷狗vip");
         String url = "http://music.ibalbal.com/api/youth/vip";
-        String body = HttpUtil.get(url);
-        log.info("领取酷狗结束 -> body: {}", body);
+        String body = HttpUtil.createGet(url).execute().body();
+        log.info("领取酷狗vip结束 -> body: {}", body);
     }
 
     /**
@@ -28,7 +28,7 @@ public class JobMusic {
     public void updateKugouLogin(){
         log.info("开始刷新酷狗登录状态");
         String url = "http://music.ibalbal.com/api/login/token";
-        String body = HttpUtil.get(url);
+        String body = HttpUtil.createGet(url).execute().body();
         log.info("刷新酷狗登录状态结束 -> body: {}", body);
     }
 }

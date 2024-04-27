@@ -82,7 +82,7 @@ public class MusicServiceImpl implements MusicService {
 
         MusicData musicData = new MusicData();
         musicData.setCover(cover);
-        musicData.setLink(url);
+        musicData.setLink("http://music.ibalbal.com/#/pages/play/music?type=kg&hash="+hash);
         musicData.setLyrics(decodeContent);
         musicData.setSinger(singername);
         musicData.setTitle(albumname);
