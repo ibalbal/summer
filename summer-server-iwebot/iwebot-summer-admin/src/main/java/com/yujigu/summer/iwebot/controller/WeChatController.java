@@ -6,6 +6,8 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.symxns.spring.log.annotation.SymLog;
 import com.symxns.sym.core.result.Result;
+import com.yujigu.summer.iwebot.entity.MessageRichText;
+import com.yujigu.summer.iwebot.entity.MessageText;
 import com.yujigu.summer.iwebot.service.GcwService;
 import com.yujigu.summer.iwebot.wechat.WechatMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -62,20 +64,15 @@ public class WeChatController {
             JSONObject jsonObject = JSONUtil.parseObj(body);
             Boolean successful = jsonObject.getBool("successful", false);
 
-            JSONObject param = JSONUtil.createObj();
-
             String resultMsg;
             if (successful){
                 resultMsg = "开始更新机器人后台...";
             }else {
                 resultMsg ="更新错误："+ jsonObject.getStr("errorMsg");
             }
-            param.set("msg", resultMsg);
-            param.set("receiver", receiver);
-            Map<String,String > headers = new HashMap();
-            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
-            log.info(resultbody);
+            MessageText messageText = new MessageText(resultMsg);
+            messageText.setReceiver(receiver);
+            messageText.execute();
         }
     }
 
@@ -89,13 +86,9 @@ public class WeChatController {
             String body = HttpUtil.createGet(url).execute().body();
             JSONObject jsonObject = JSONUtil.parseObj(body);
             String resultMsg = jsonObject.getStr("text");
-            JSONObject param = JSONUtil.createObj();
-            param.set("msg", resultMsg.replaceAll("；","\n"));
-            param.set("receiver", receiver);
-            Map<String,String > headers = new HashMap();
-            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
-            log.info(resultbody);
+            MessageText messageText = new MessageText(resultMsg.replaceAll("；","\n"));
+            messageText.setReceiver(receiver);
+            messageText.execute();
             return ;
         }
 
@@ -106,44 +99,33 @@ public class WeChatController {
             String body = HttpUtil.createGet(reqUrl).execute().body();
             JSONObject jsonObject = JSONUtil.parseObj(body);
             if (jsonObject.getInt("status") != 1) {
-                JSONObject param = JSONUtil.createObj();
-                param.set("msg", "获取数据失败"+jsonObject.getStr("error"));
-                param.set("receiver", receiver);
-                Map<String,String > headers = new HashMap();
-                headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-                String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
-                log.info(resultbody);
+                MessageText messageText = new MessageText();
+                messageText.setMsg("获取数据失败"+jsonObject.getStr("error"));
+                messageText.setReceiver(receiver);
+                messageText.execute();
             }else {
                 JSONObject data =  jsonObject.getJSONObject("data");
                 JSONArray dataInfos = data.getJSONArray("info");
                 JSONObject infosJSONObject = dataInfos.getJSONObject(0);
                 if (ObjectUtils.isEmpty(infosJSONObject)){
-                    JSONObject param = JSONUtil.createObj();
-                    param.set("msg", "未搜到相关歌曲");
-                    param.set("receiver", receiver);
-                    Map<String,String > headers = new HashMap();
-                    headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-                    String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
-                    log.info(resultbody);
-                    return;
+                    MessageText messageText = new MessageText();
+                    messageText.setMsg("未搜到相关歌曲");
+                    messageText.setReceiver(receiver);
+                    messageText.execute();
                 }
-
                 String song_name = infosJSONObject.getStr("songname");
                 String song_singer = infosJSONObject.getStr("singername");
                 String quality = "即音乐";
                 String cover = "https://minio.ibalbal.com:800/wx-mini/music.png";
                 String link = "http://music.ibalbal.com/#/pages/play/music?type=kg&hash="+ infosJSONObject.getStr("hash");
-                JSONObject param = JSONUtil.createObj();
-                param.set("url", link);
-                param.set("title", song_name );
-                param.set("name",  quality);
-                param.set("thumburl", cover);
-                param.set("digest", song_singer);
-                param.set("receiver", receiver);
-                Map<String,String > headers = new HashMap();
-                headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-                String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_rich_text").body(param.toString()).addHeaders(headers).execute().body();
-                log.info(resultbody);
+                MessageRichText messageText = new MessageRichText();
+                messageText.setUrl(link);
+                messageText.setTitle( song_name );
+                messageText.setName( quality);
+                messageText.setThumburl(cover);
+                messageText.setDigest(song_singer);
+                messageText.setReceiver(receiver);
+                messageText.execute();
             }
         }
 
@@ -156,14 +138,10 @@ public class WeChatController {
                 if (ObjectUtils.isNotEmpty(data)) {
                     newUrl = url.replace("NAME", data);
                 }else {
-                    JSONObject param = JSONUtil.createObj();
-                    param.set("msg", "未输入短剧名");
-                    param.set("receiver", receiver);
-                    Map<String,String > headers = new HashMap();
-                    headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-                    String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
-                    log.info(resultbody);
-                    return;
+                    MessageText messageText = new MessageText();
+                    messageText.setMsg("未输入短剧名");
+                    messageText.setReceiver(receiver);
+                    messageText.execute();
                 }
                 String body = HttpUtil.createGet(newUrl).execute().body();
                 JSONObject jsonObject = JSONUtil.parseObj(body);
@@ -196,75 +174,11 @@ public class WeChatController {
             }catch (Exception e){
                 resultMsg = new StringBuilder("系统异常");
             }
-            JSONObject param = JSONUtil.createObj();
-            param.set("msg", resultMsg);
-            param.set("receiver", receiver);
-            Map<String,String > headers = new HashMap();
-            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
-            log.info(resultbody);
-            return;
+            MessageText messageText = new MessageText();
+            messageText.setMsg(resultMsg);
+            messageText.setReceiver(receiver);
+            messageText.execute();
         }
-
-
-//
-//        if (message.equals("黑丝")){
-//            String url = "https://v2.api-m.com/api/heisi";
-//            String body = HttpUtil.createGet(url).execute().body();
-//            JSONObject jsonObject = JSONUtil.parseObj(body);
-//            String resultMsg = jsonObject.getStr("data");
-//            JSONObject param = JSONUtil.createObj();
-//            param.set("path", resultMsg);
-//            param.set("receiver", receiver);
-//            Map<String,String > headers = new HashMap();
-//            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-//            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
-//            log.info(resultbody);
-//            return ;
-//        }
-//
-//        if (message.equals("白丝")){
-//            String url = "https://v2.api-m.com/api/baisi";
-//            String body = HttpUtil.createGet(url).execute().body();
-//            JSONObject jsonObject = JSONUtil.parseObj(body);
-//            String resultMsg = jsonObject.getStr("data");
-//            JSONObject param = JSONUtil.createObj();
-//            param.set("path", resultMsg);
-//            param.set("receiver", receiver);
-//            Map<String,String > headers = new HashMap();
-//            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-//            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
-//            log.info(resultbody);
-//            return ;
-//        }
-//
-//
-//        if (message.equals("小姐姐视频")){
-//            String url = "www.wudada.online/Api/NewSp";
-//            String resultMsg =  HttpUtil.createGet(url).setFollowRedirects(false).executeAsync().header("Location");
-//            JSONObject param = JSONUtil.createObj();
-//            param.set("path", resultMsg);
-//            param.set("receiver", receiver);
-//            Map<String,String > headers = new HashMap();
-//            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-//            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
-//            log.info(resultbody);
-//            return ;
-//        }
-//
-//        if (message.equals("占卜")){
-//            String url = "https://www.hhlqilongzhu.cn/api/tu_yunshi.php";
-//            JSONObject param = JSONUtil.createObj();
-//            param.set("path", url);
-//            param.set("receiver", receiver);
-//            Map<String,String > headers = new HashMap();
-//            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-//            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_file").body(param.toString()).addHeaders(headers).execute().body();
-//            log.info(resultbody);
-//            return ;
-//        }
-
-
     }
 
 
@@ -280,13 +194,10 @@ public class WeChatController {
                 msg.append("未输入歌曲名");
             }
 
-            JSONObject param = JSONUtil.createObj();
-            param.set("msg", msg);
-            param.set("receiver", receiver);
-            Map<String,String > headers = new HashMap();
-            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
-            log.info(resultbody);
+            MessageText messageText = new MessageText();
+            messageText.setMsg(msg);
+            messageText.setReceiver(receiver);
+            messageText.execute();
             return ;
         }
         if (message.startsWith("下舞")){
@@ -298,14 +209,10 @@ public class WeChatController {
                 msg.append("未输入歌曲链接");
             }
 
-            JSONObject param = JSONUtil.createObj();
-            param.set("msg", msg);
-            param.set("receiver", receiver);
-            Map<String,String > headers = new HashMap();
-            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-            String resultbody = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
-            log.info(resultbody);
-            return ;
+            MessageText messageText = new MessageText();
+            messageText.setMsg(msg);
+            messageText.setReceiver(receiver);
+            messageText.execute();
         }
     }
 
