@@ -1,5 +1,7 @@
 package com.yujigu.summer.iwebot.service.impl;
 
+import com.symxns.sym.core.result.ManageException;
+import com.yujigu.summer.iwebot.gcw.GcwData;
 import com.yujigu.summer.iwebot.service.GcwService;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -12,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,10 +31,12 @@ import java.util.regex.Pattern;
 public class GcwServiceImpl implements GcwService {
 
     @Override
-    public String gcw(String name) {
+    public List<GcwData> gcw(String name) {
         String url = "https://www.gcwdp.com/plus/search.php?pagesize=20&q=NAME&channeltype=3";
         StringBuilder result = new StringBuilder();
+        List<GcwData> gcwDataList = null;
         try {
+            gcwDataList = new ArrayList<>();
             // 将字符串按照 GBK 编码转换成字节数组
             byte[] gbkBytes = name.getBytes("GBK");
             String coverName = bytesToHexString(gbkBytes);
@@ -56,20 +62,17 @@ public class GcwServiceImpl implements GcwService {
 
                 // 获取 <span> 标签中的文本内容
                 String text = li.selectFirst("span").text();
-
-                result.append(text).append("\n");
-                result.append("https://www.gcwdp.com" + href).append("\n");
-                result.append("\n");
+                gcwDataList.add(new GcwData(text, "https://www.gcwdp.com" + href));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result.toString();
+        return gcwDataList;
     }
 
     @Override
     public String gcwMp3(@RequestParam("url") String url) {
-        StringBuilder result = new StringBuilder();
+        String musicUrl = "";
         // 提取 href 属性中的数值部分
         String[] parts = url.split("/");
         String value = parts[parts.length - 1];
@@ -86,21 +89,20 @@ public class GcwServiceImpl implements GcwService {
                 Pattern pattern = Pattern.compile("url: '([^']+)'");
                 Matcher matcher = pattern.matcher(musicElement.data());
                 if (matcher.find()) {
-                    String musicUrl = matcher.group(1);
-                    result.append("音乐 URL: ").append("\n");
-                    result.append(musicUrl);
-                    System.out.println("音乐 URL: " + musicUrl);
+                    musicUrl = matcher.group(1);
+                    log.info("音乐 musicUrl: {}", musicUrl);
                 } else {
-                    System.out.println("未找到音乐 URL");
+                    throw new ManageException("未找到音乐 URL");
                 }
             } else {
-                System.out.println("未找到音乐 URL");
+                throw new ManageException("数据获取失败");
             }
 
         } catch (IOException e) {
+            log.error("数据获取异常：{}", e.getMessage());
             e.printStackTrace();
         }
-        return result.toString();
+        return musicUrl.trim();
     }
 
 
