@@ -49,11 +49,21 @@ public class WeChatController {
 
                 cover(wechatMessage.getContent(), receiver);
             }
+
+            if (wechatMessage.getType() == 10000){
+                welcome(message, wechatMessage.getRoomid());
+            }
             log.info("---：{}", wechatMessage);
         }catch (Exception e){
             log.info("e", e.getMessage());
         }
         return Result.ok();
+    }
+
+    public static void welcome(String message, String receiver){
+        MessageText messageText = new MessageText("欢迎进入群聊，请认真看公告哦~");
+        messageText.setReceiver(receiver);
+        messageText.execute();
     }
 
     public static void update(WechatMessage wechatMessage, String message, String receiver, boolean isGroup){
