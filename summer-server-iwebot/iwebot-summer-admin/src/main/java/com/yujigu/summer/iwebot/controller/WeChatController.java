@@ -2,6 +2,7 @@ package com.yujigu.summer.iwebot.controller;
 
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONGetter;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.symxns.spring.log.annotation.SymLog;
@@ -47,7 +48,6 @@ public class WeChatController {
                 update(wechatMessage, wechatMessage.getContent(), receiver, wechatMessage.Group);
 
                 cover(wechatMessage.getContent(), receiver);
-                gcw(wechatMessage.getContent(), receiver);
             }
             log.info("---：{}", wechatMessage);
         }catch (Exception e){
@@ -179,43 +179,78 @@ public class WeChatController {
             messageText.setReceiver(receiver);
             messageText.execute();
         }
-    }
 
+        if (message.startsWith("小说")){
+            StringBuilder resultMsg = new StringBuilder();
+            try {
+                String data = message.replaceAll("小说", "").trim();
 
-    public void gcw(String message, String receiver){
-        if (message.startsWith("搜舞")){
-            StringBuilder msg = new StringBuilder();
+                String[] content = data.split("\\s+");
+                if (content.length<=1){
+                    String url = "https://www.hhlqilongzhu.cn/api/novel_1.php?name=NAME&type=json";
+                    String newUrl = null;
+                    if (ObjectUtils.isNotEmpty(data)) {
+                        newUrl = url.replace("NAME", data);
+                    }else {
+                        MessageText messageText = new MessageText();
+                        messageText.setMsg("未输入小说名");
+                        messageText.setReceiver(receiver);
+                        messageText.execute();
+                    }
+                    String body = HttpUtil.createGet(newUrl).execute().body();
+                    if (ObjectUtils.isEmpty(body)) {
+                        resultMsg = new StringBuilder("未找到资源");
+                    } else {
+                        resultMsg.append("温馨提示：");
+                        resultMsg.append("\n");
+                        resultMsg.append("所有资源来源于网络，侵删");
+                        resultMsg.append("\n");
+                        resultMsg.append("---------------------");
+                        resultMsg.append("\n");
+                        resultMsg.append(body);
 
-            String data = message.replaceAll("搜舞", "").trim();
+                    }
+                }else {
+                    String name = content[0];
+                    String n = content[1];
+                    String url = "https://www.hhlqilongzhu.cn/api/novel_1.php?name=NAME&type=json&n="+n;
+                    String newUrl = url.replace("NAME", name);
+                    String body = HttpUtil.createGet(newUrl).execute().body();
+                    JSONObject jsonObject = JSONUtil.parseObj(body);
+                    if (ObjectUtils.isEmpty(jsonObject.get("download"))) {
+                        resultMsg = new StringBuilder("数据为空");
+                    } else {
+                        resultMsg.append("温馨提示：");
+                        resultMsg.append("\n");
+                        resultMsg.append("所有资源来源于网络，侵删");
+                        resultMsg.append("\n");
+                        resultMsg.append("---------------------");
+                        resultMsg.append("\n");
+                        resultMsg.append("书名：");
+                        resultMsg.append(jsonObject.getStr("title"));
+                        resultMsg.append("\n");
+                        resultMsg.append("作者：");
+                        resultMsg.append(jsonObject.getStr("author"));
+                        resultMsg.append("\n");
+                        resultMsg.append("类型：");
+                        resultMsg.append(jsonObject.getStr("type"));
+                        resultMsg.append("\n");
+                        resultMsg.append("下载链接：");
+                        resultMsg.append(jsonObject.getStr("download"));
+                        resultMsg.append("\n");
+                        resultMsg.append("\n");
+                        resultMsg.append("简介：").append(jsonObject.getStr("js"));
+                        resultMsg.append("\n");
+                    }
+                }
 
-            if (ObjectUtils.isNotEmpty(data)) {
-                msg.append( gcwService.gcw(data));
-            }else {
-                msg.append("未输入歌曲名");
+            }catch (Exception e){
+                resultMsg = new StringBuilder("系统异常");
             }
-
             MessageText messageText = new MessageText();
-            messageText.setMsg(msg);
+            messageText.setMsg(resultMsg);
             messageText.setReceiver(receiver);
             messageText.execute();
-            return ;
-        }
-        if (message.startsWith("下舞")){
-            StringBuilder msg = new StringBuilder();
-            String data = message.replaceAll("下舞", "").trim();
-            if (ObjectUtils.isNotEmpty(data)) {
-                msg.append(gcwService.gcwMp3(data));
-            }else {
-                msg.append("未输入歌曲链接");
-            }
-
-            MessageText messageText = new MessageText();
-            messageText.setMsg(msg);
-            messageText.setReceiver(receiver);
-            messageText.execute();
         }
     }
-
-
-
 }

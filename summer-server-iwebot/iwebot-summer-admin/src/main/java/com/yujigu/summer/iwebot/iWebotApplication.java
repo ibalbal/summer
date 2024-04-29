@@ -23,13 +23,13 @@ public class iWebotApplication {
 
         public static void main(String[] args) {
             SpringApplication.run(iWebotApplication.class, args);
-//            JSONObject param = JSONUtil.createObj();
-//            param.set("msg", "机器人后台启动成功");
-//            param.set("receiver", "wxid_oa0rwmnimagm21");
-//            Map<String,String > headers = new HashMap();
-//            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
-//            String body = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
-//            log.info("机器人后台启动成功:{}",body);
+            JSONObject param = JSONUtil.createObj();
+            param.set("msg", "机器人后台启动成功");
+            param.set("receiver", "wxid_oa0rwmnimagm21");
+            Map<String,String > headers = new HashMap();
+            headers.put("Authorization", "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT");
+            String body = HttpUtil.createPost("http://192.168.10.10:7600/wcf/send_txt").body(param.toString()).addHeaders(headers).execute().body();
+            log.info("机器人后台启动成功:{}",body);
         }
 
 }
