@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,11 +31,12 @@ import java.util.Map;
  * @Description wechat api
  */
 @Slf4j
+@RefreshScope
 @RestController
 @RequestMapping("/callback/api")
 public class WeChatController {
 
-    @Value("${iwebot.welcome:'欢迎进入群聊，请认真看公告哦~'}")
+    @Value("${iwebot.welcome:'欢迎进群聊，请认真看公告'}")
     private String welcomeMessage;
 
     @Autowired
