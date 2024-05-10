@@ -67,9 +67,9 @@ public class WeChatController {
     }
 
     public static void welcome(String message, String receiver){
-        MessageText messageText = new MessageText(message);
-        messageText.setReceiver(receiver);
-        messageText.execute();
+//        MessageText messageText = new MessageText(message);
+//        messageText.setReceiver(receiver);
+//        messageText.execute();
     }
 
     public static void update(WechatMessage wechatMessage, String message, String receiver, boolean isGroup){
