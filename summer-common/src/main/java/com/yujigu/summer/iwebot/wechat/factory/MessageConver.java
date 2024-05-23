@@ -2,15 +2,22 @@ package com.yujigu.summer.iwebot.wechat.factory;
 
 import com.sun.tools.javac.Main;
 import com.symxns.sym.core.result.ManageException;
+import com.yujigu.summer.iwebot.wechat.EnumsMsgType;
 import com.yujigu.summer.iwebot.wechat.WechatMessage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationTargetException;
 @Slf4j
 public class MessageConver {
-    public static Message init(WechatMessage wechatMessage){
-        String type = wechatMessage.getType();
+    public static Message init(WechatMessage wechatMessage) {
+        String msgType = "_" + wechatMessage.getType();
 
+        String type;
+        try {
+            type = EnumsMsgType.valueOf(msgType).getType();
+        }catch (Exception e){
+            throw new ManageException("未声明的消息类型" + wechatMessage.getType());
+        }
         // 类名（不包括包名）
         StringBuilder className = new StringBuilder("_");
         className.append(type);
