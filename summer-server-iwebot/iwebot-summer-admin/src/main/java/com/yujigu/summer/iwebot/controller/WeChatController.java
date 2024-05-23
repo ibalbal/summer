@@ -10,7 +10,9 @@ import com.symxns.sym.core.result.Result;
 import com.yujigu.summer.iwebot.entity.MessageRichText;
 import com.yujigu.summer.iwebot.entity.MessageText;
 import com.yujigu.summer.iwebot.service.GcwService;
+import com.yujigu.summer.iwebot.wechat.EnumsMsgType;
 import com.yujigu.summer.iwebot.wechat.WechatMessage;
+import com.yujigu.summer.iwebot.wechat.factory.MessageConver;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Author ly
@@ -49,14 +49,16 @@ public class WeChatController {
 
         try{
             WechatMessage wechatMessage = com.alibaba.fastjson2.JSONObject.parseObject(message, WechatMessage.class);
-            if (wechatMessage.getType() == 1){
+            MessageConver.init(wechatMessage).execute();
+
+            if (Objects.equals(wechatMessage.getType(), EnumsMsgType._0.getType())){
                 String receiver = wechatMessage.Group ? wechatMessage.getRoomid() : wechatMessage.getSender();
                 update(wechatMessage, wechatMessage.getContent(), receiver, wechatMessage.Group);
 
                 cover(wechatMessage.getContent(), receiver);
             }
 
-            if (wechatMessage.getType() == 10000){
+            if (Objects.equals(wechatMessage.getType(), EnumsMsgType._10000.getType())){
                 welcome(welcomeMessage, wechatMessage.getRoomid());
             }
             log.info("---：{}", wechatMessage);

@@ -15,7 +15,7 @@ public class WechatMessage {
     public String sender;
     public String sign;
     public Long ts;
-    public Long type;
+    public String type;
     public Xml xml;
 
     @JsonProperty("is_group")
@@ -23,4 +23,7 @@ public class WechatMessage {
 
     public String roomid;
 
+    public WechatMessage(String type) {
+        this.type = type;
+    }
 }
