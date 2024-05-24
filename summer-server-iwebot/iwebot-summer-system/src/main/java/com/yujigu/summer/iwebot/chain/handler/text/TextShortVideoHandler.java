@@ -18,59 +18,61 @@ import org.springframework.stereotype.Component;
 @Component
 public class TextShortVideoHandler extends TextMessageAbstract{
     @Override
-    public void handleMessage(String receiver, WechatTextMessage wechatMessage) {
-        if (wechatMessage.content.startsWith("短剧")){
-            log.info("短剧");
-            StringBuilder resultMsg = new StringBuilder();
-            try {
-                String url = "https://api.djcat.sbs/api/movies?page=1&limit=5&name=NAME";
-                String data = wechatMessage.content.replaceAll("短剧", "").trim();
-                String newUrl = null;
-                if (ObjectUtils.isNotEmpty(data)) {
-                    newUrl = url.replace("NAME", data);
-                }else {
-                    ResultMessageText messageText = new ResultMessageText();
-                    messageText.setMsg("未输入短剧名");
-                    messageText.setReceiver(receiver);
-                    messageText.execute();
-                }
-                String body = HttpUtil.createGet(newUrl).execute().body();
-                JSONObject jsonObject = JSONUtil.parseObj(body);
-                Integer code = jsonObject.getInt("code");
-                if (code != 0) {
-                    resultMsg = new StringBuilder(jsonObject.getStr("message"));
+    public void execute(String receiver, WechatTextMessage wechatMessage) {
+        log.info("短剧");
+        StringBuilder resultMsg = new StringBuilder();
+        try {
+            String url = "https://api.djcat.sbs/api/movies?page=1&limit=5&name=NAME";
+            String data = wechatMessage.content.replaceAll("短剧", "").trim();
+            String newUrl = null;
+            if (ObjectUtils.isNotEmpty(data)) {
+                newUrl = url.replace("NAME", data);
+            }else {
+                ResultMessageText messageText = new ResultMessageText();
+                messageText.setMsg("未输入短剧名");
+                messageText.setReceiver(receiver);
+                messageText.execute();
+            }
+            String body = HttpUtil.createGet(newUrl).execute().body();
+            JSONObject jsonObject = JSONUtil.parseObj(body);
+            Integer code = jsonObject.getInt("code");
+            if (code != 0) {
+                resultMsg = new StringBuilder(jsonObject.getStr("message"));
+            } else {
+                resultMsg.append("温馨提示：");
+                resultMsg.append("\n");
+                resultMsg.append("所有资源来源于网络，侵删");
+                resultMsg.append("\n");
+                resultMsg.append("---------------------");
+                resultMsg.append("\n");
+
+                JSONObject moviesData = jsonObject.getJSONObject("data");
+                if (moviesData.getInt("total") == 0) {
+                    resultMsg = new StringBuilder("没有找到相关短剧");
                 } else {
-                    resultMsg.append("温馨提示：");
-                    resultMsg.append("\n");
-                    resultMsg.append("所有资源来源于网络，侵删");
-                    resultMsg.append("\n");
-                    resultMsg.append("---------------------");
-                    resultMsg.append("\n");
+                    JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("rows");
 
-                    JSONObject moviesData = jsonObject.getJSONObject("data");
-                    if (moviesData.getInt("total") == 0) {
-                        resultMsg = new StringBuilder("没有找到相关短剧");
-                    } else {
-                        JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("rows");
-
-                        for (int i = 0; i < jsonArray.size(); i++) {
-                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                            resultMsg.append(jsonObject1.getStr("name"));
-                            resultMsg.append("\n");
-                            resultMsg.append("链接：").append(jsonObject1.getStr("link"));
-                            resultMsg.append("\n\n");
-                        }
+                    for (int i = 0; i < jsonArray.size(); i++) {
+                        JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                        resultMsg.append(jsonObject1.getStr("name"));
+                        resultMsg.append("\n");
+                        resultMsg.append("链接：").append(jsonObject1.getStr("link"));
+                        resultMsg.append("\n\n");
                     }
                 }
-            }catch (Exception e){
-                resultMsg = new StringBuilder("系统异常");
             }
-            ResultMessageText messageText = new ResultMessageText();
-            messageText.setMsg(resultMsg);
-            messageText.setReceiver(receiver);
-            messageText.execute();
-        }else if(china  != null){
-            china.handleMessage(receiver, wechatMessage);
+        }catch (Exception e){
+            resultMsg = new StringBuilder("系统异常");
         }
+        ResultMessageText messageText = new ResultMessageText();
+        messageText.setMsg(resultMsg);
+        messageText.setReceiver(receiver);
+        messageText.execute();
+    }
+
+    @Override
+    public boolean isChain(WechatMessage wechatMessage) {
+        WechatTextMessage wechatTextMessage = (WechatTextMessage) wechatMessage;
+        return wechatTextMessage.content.startsWith("短剧");
     }
 }

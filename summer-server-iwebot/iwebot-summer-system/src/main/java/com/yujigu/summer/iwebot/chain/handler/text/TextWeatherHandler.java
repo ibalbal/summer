@@ -17,23 +17,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class TextWeatherHandler extends TextMessageAbstract{
     @Override
-    public void handleMessage(String receiver, WechatTextMessage wechatMessage) {
-        if (wechatMessage.content.endsWith("天气")){
-            log.info("处理天气请求");
-            String url = "https://wrest.rehi.org/weather";
-            String city = wechatMessage.content.replaceAll("天气", "");
-            if (ObjectUtils.isNotEmpty(city)){
-                url = "https://wrest.rehi.org/weather/" + city;
-            }
-            String body = HttpUtil.createGet(url).execute().body();
-            JSONObject jsonObject = JSONUtil.parseObj(body);
-            String resultMsg = jsonObject.getStr("text");
-            ResultMessageText messageText = new ResultMessageText(resultMsg.replaceAll("；","\n"));
-            messageText.setReceiver(receiver);
-            messageText.execute();
-        }else if(china  != null){
-            china.handleMessage(receiver, wechatMessage);
+    public void execute(String receiver, WechatTextMessage wechatMessage) {
+        log.info("处理天气请求");
+        String url = "https://wrest.rehi.org/weather";
+        String city = wechatMessage.content.replaceAll("天气", "");
+        if (ObjectUtils.isNotEmpty(city)){
+            url = "https://wrest.rehi.org/weather/" + city;
         }
+        String body = HttpUtil.createGet(url).execute().body();
+        JSONObject jsonObject = JSONUtil.parseObj(body);
+        String resultMsg = jsonObject.getStr("text");
+        ResultMessageText messageText = new ResultMessageText(resultMsg.replaceAll("；","\n"));
+        messageText.setReceiver(receiver);
+        messageText.execute();
+    }
 
+    @Override
+    public boolean isChain(WechatMessage wechatMessage) {
+        WechatTextMessage wechatTextMessage = (WechatTextMessage) wechatMessage;
+        return wechatTextMessage.content.endsWith("天气");
     }
 }

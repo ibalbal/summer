@@ -1,5 +1,6 @@
 package com.yujigu.summer.iwebot.chain.handler.system;
 
+import com.yujigu.summer.iwebot.wechat.body.WechatMessage;
 import com.yujigu.summer.iwebot.wechat.body.WechatSystemMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -11,11 +12,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class SystemRedEnvelopeMessageHandler extends SystemMessageAbstract{
     @Override
-    public void handleMessage(String receiver, WechatSystemMessage wechatSystemMessage) {
-        if (wechatSystemMessage.content.startsWith("收到红包")){
-            log.info("红包处理");
-        }else if (china  != null){
-            china.handleMessage(receiver, wechatSystemMessage);
-        }
+    public void execute(String receiver, WechatSystemMessage wechatSystemMessage) {
+        log.info("红包处理");
+    }
+
+    @Override
+    public boolean isChain(WechatMessage wechatMessage) {
+        WechatSystemMessage wechatSystemMessage = (WechatSystemMessage)wechatMessage;
+        return wechatSystemMessage.content.startsWith("收到红包");
     }
 }

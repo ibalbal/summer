@@ -16,26 +16,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class TextUpdateSystemHandler extends TextMessageAbstract{
     @Override
-    public void handleMessage(String receiver, WechatTextMessage wechatMessage) {
-        if (wechatMessage.getSender().equals("wxid_oa0rwmnimagm21") && wechatMessage.getContent().equals("更新")){
-            log.info("处理系统更新");
-            JSONObject webhookParams = JSONUtil.createObj();
-            webhookParams.put("sender", receiver);
-            String body = HttpUtil.createPost("http://flow-openapi.aliyun.com/pipeline/webhook/4TcgVAxeFsNWlrrjhLad").body(webhookParams.toString()).execute().body();
-            JSONObject jsonObject = JSONUtil.parseObj(body);
-            Boolean successful = jsonObject.getBool("successful", false);
+    public void execute(String receiver, WechatTextMessage wechatMessage) {
+        log.info("处理系统更新");
+        JSONObject webhookParams = JSONUtil.createObj();
+        webhookParams.put("sender", receiver);
+        String body = HttpUtil.createPost("http://flow-openapi.aliyun.com/pipeline/webhook/4TcgVAxeFsNWlrrjhLad").body(webhookParams.toString()).execute().body();
+        JSONObject jsonObject = JSONUtil.parseObj(body);
+        Boolean successful = jsonObject.getBool("successful", false);
 
-            String resultMsg;
-            if (successful){
-                resultMsg = "开始更新机器人后台...";
-            }else {
-                resultMsg ="更新错误："+ jsonObject.getStr("errorMsg");
-            }
-            ResultMessageText messageText = new ResultMessageText(resultMsg);
-            messageText.setReceiver(receiver);
-            messageText.execute();
-        }else if(china  != null){
-            china.handleMessage(receiver, wechatMessage);
+        String resultMsg;
+        if (successful){
+            resultMsg = "开始更新机器人后台...";
+        }else {
+            resultMsg ="更新错误："+ jsonObject.getStr("errorMsg");
         }
+        ResultMessageText messageText = new ResultMessageText(resultMsg);
+        messageText.setReceiver(receiver);
+        messageText.execute();
+    }
+
+    @Override
+    public boolean isChain(WechatMessage wechatMessage) {
+        WechatTextMessage wechatTextMessage = (WechatTextMessage) wechatMessage;
+        return wechatTextMessage.getSender().equals("wxid_oa0rwmnimagm21") && wechatTextMessage.getContent().equals("更新");
     }
 }

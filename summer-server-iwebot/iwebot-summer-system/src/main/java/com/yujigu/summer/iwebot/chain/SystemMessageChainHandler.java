@@ -31,6 +31,6 @@ public class SystemMessageChainHandler implements MessageChainHandler {
         systemMessageHandler.setMessage(systemPatMessageHandler);
         systemPatMessageHandler.setMessage(systemGroupMessageHandler);
         systemGroupMessageHandler.setMessage(systemRedEnvelopeMessageHandler);
-        systemMessageHandler.handleMessage(sender, (WechatSystemMessage) wechatMessage);
+        systemMessageHandler.handleMessage(sender, wechatMessage);
     }
 }

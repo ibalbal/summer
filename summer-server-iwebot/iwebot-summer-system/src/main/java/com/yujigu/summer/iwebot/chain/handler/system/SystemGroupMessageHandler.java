@@ -1,6 +1,7 @@
 package com.yujigu.summer.iwebot.chain.handler.system;
 
 import com.yujigu.summer.iwebot.entity.ResultMessageText;
+import com.yujigu.summer.iwebot.wechat.body.WechatMessage;
 import com.yujigu.summer.iwebot.wechat.body.WechatSystemMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -11,8 +12,9 @@ import java.util.regex.Pattern;
 @Slf4j
 @Component
 public class SystemGroupMessageHandler extends SystemMessageAbstract{
+
     @Override
-    public void handleMessage(String receiver, WechatSystemMessage wechatSystemMessage) {
+    protected void execute(String receiver, WechatSystemMessage wechatSystemMessage) {
         if (wechatSystemMessage.content.contains("修改群名为")){
             ResultMessageText messageText = new ResultMessageText(wechatSystemMessage.content);
             messageText.setReceiver(receiver);
@@ -40,5 +42,10 @@ public class SystemGroupMessageHandler extends SystemMessageAbstract{
         }else if (china  != null){
             china.handleMessage(receiver, wechatSystemMessage);
         }
+    }
+
+    @Override
+    public boolean isChain(WechatMessage wechatMessage) {
+        return true;
     }
 }

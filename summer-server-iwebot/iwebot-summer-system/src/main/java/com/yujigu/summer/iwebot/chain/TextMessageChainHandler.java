@@ -39,7 +39,6 @@ public class TextMessageChainHandler implements MessageChainHandler {
         textWeatherHandler.setMessage(textSongHandler);
         textSongHandler.setMessage(textNovelHandler);
         textNovelHandler.setMessage(textShortVideoHandler);
-
-        textMessageHandler.handleMessage(sender, (WechatTextMessage) wechatMessage);
+        textMessageHandler.handleMessage(sender, wechatMessage);
     }
 }
