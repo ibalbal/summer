@@ -45,9 +45,4 @@ public abstract class ResultMessage implements Serializable {
         }
     }
 
-    public boolean execute() {
-        String token = "Bearer KpnJuEdJVaNpjBjXOfBmTVuXQLNtzFSNwJNJffXEuydkRKTpdHbcjrCXYwotUYocMstxaNOsSstTzJrNjZVfAJqWRPQUeccpTT";
-        String preUrk = "http://192.168.10.10:7600";
-        return execute(preUrk, token);
-    }
 }

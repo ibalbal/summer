@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TextWeatherHandler extends TextMessageAbstract{
     @Override
-    public void execute(String receiver, WechatTextMessage wechatMessage) {
+    public ResultMessageText execute(String receiver, WechatTextMessage wechatMessage) {
         log.info("处理天气请求");
         String url = "https://wrest.rehi.org/weather";
         String city = wechatMessage.content.replaceAll("天气", "");
@@ -29,7 +29,7 @@ public class TextWeatherHandler extends TextMessageAbstract{
         String resultMsg = jsonObject.getStr("text");
         ResultMessageText messageText = new ResultMessageText(resultMsg.replaceAll("；","\n"));
         messageText.setReceiver(receiver);
-        messageText.execute();
+        return messageText;
     }
 
     @Override

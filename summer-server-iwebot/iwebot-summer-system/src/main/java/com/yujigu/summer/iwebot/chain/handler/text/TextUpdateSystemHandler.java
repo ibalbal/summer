@@ -3,6 +3,7 @@ package com.yujigu.summer.iwebot.chain.handler.text;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.yujigu.summer.iwebot.entity.ResultMessage;
 import com.yujigu.summer.iwebot.entity.ResultMessageText;
 import com.yujigu.summer.iwebot.wechat.body.WechatMessage;
 import com.yujigu.summer.iwebot.wechat.body.WechatTextMessage;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TextUpdateSystemHandler extends TextMessageAbstract{
     @Override
-    public void execute(String receiver, WechatTextMessage wechatMessage) {
+    public ResultMessage execute(String receiver, WechatTextMessage wechatMessage) {
         log.info("处理系统更新");
         JSONObject webhookParams = JSONUtil.createObj();
         webhookParams.put("sender", receiver);
@@ -32,7 +33,7 @@ public class TextUpdateSystemHandler extends TextMessageAbstract{
         }
         ResultMessageText messageText = new ResultMessageText(resultMsg);
         messageText.setReceiver(receiver);
-        messageText.execute();
+        return messageText;
     }
 
     @Override

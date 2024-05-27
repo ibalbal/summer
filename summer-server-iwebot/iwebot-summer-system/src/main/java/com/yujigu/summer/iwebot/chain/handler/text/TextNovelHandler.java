@@ -3,6 +3,7 @@ package com.yujigu.summer.iwebot.chain.handler.text;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.yujigu.summer.iwebot.entity.ResultMessage;
 import com.yujigu.summer.iwebot.entity.ResultMessageText;
 import com.yujigu.summer.iwebot.wechat.body.WechatMessage;
 import com.yujigu.summer.iwebot.wechat.body.WechatTextMessage;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TextNovelHandler extends TextMessageAbstract{
     @Override
-    public void execute(String receiver, WechatTextMessage wechatMessage) {
+    public ResultMessage execute(String receiver, WechatTextMessage wechatMessage) {
 
         log.info("小说");
         StringBuilder resultMsg = new StringBuilder();
@@ -34,7 +35,7 @@ public class TextNovelHandler extends TextMessageAbstract{
                     ResultMessageText messageText = new ResultMessageText();
                     messageText.setMsg("未输入小说名");
                     messageText.setReceiver(receiver);
-                    messageText.execute();
+                    return messageText;
                 }
                 String body = HttpUtil.createGet(newUrl).execute().body();
                 if (ObjectUtils.isEmpty(body)) {
@@ -87,7 +88,7 @@ public class TextNovelHandler extends TextMessageAbstract{
         ResultMessageText messageText = new ResultMessageText();
         messageText.setMsg(resultMsg);
         messageText.setReceiver(receiver);
-        messageText.execute();
+        return messageText;
     }
 
     @Override

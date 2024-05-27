@@ -1,6 +1,7 @@
 package com.yujigu.summer.iwebot.chain.handler.system;
 
 import com.yujigu.summer.iwebot.chain.handler.MessageHandler;
+import com.yujigu.summer.iwebot.entity.ResultMessage;
 import com.yujigu.summer.iwebot.wechat.body.WechatMessage;
 import com.yujigu.summer.iwebot.wechat.body.WechatSystemMessage;
 
@@ -12,10 +13,10 @@ public abstract class SystemMessageAbstract extends MessageHandler {
         this.china = china;
     }
 
-    protected abstract void execute(String receiver, WechatSystemMessage wechatMessage);
+    protected abstract ResultMessage execute(String receiver, WechatSystemMessage wechatMessage);
 
     @Override
-    protected void executeMessage(String receiver, WechatMessage wechatMessage) {
-        execute(receiver, (WechatSystemMessage) wechatMessage);
+    protected ResultMessage executeMessage(String receiver, WechatMessage wechatMessage) {
+        return execute(receiver, (WechatSystemMessage) wechatMessage);
     }
 }

@@ -1,5 +1,6 @@
 package com.yujigu.summer.iwebot.chain.handler.text;
 
+import com.yujigu.summer.iwebot.entity.ResultMessage;
 import com.yujigu.summer.iwebot.wechat.body.WechatMessage;
 import com.yujigu.summer.iwebot.wechat.body.WechatSystemMessage;
 import com.yujigu.summer.iwebot.wechat.body.WechatTextMessage;
@@ -21,10 +22,11 @@ public class TextMessageHandler extends TextMessageAbstract{
     }
 
     @Override
-    public void execute(String receiver, WechatTextMessage wechatMessage) {
+    public ResultMessage execute(String receiver, WechatTextMessage wechatMessage) {
         log.info("TextMessageHandler 文本处理");
         if(china  != null){
             china.handleMessage(receiver, wechatMessage);
         }
+        return null;
     }
 }

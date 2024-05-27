@@ -1,5 +1,6 @@
 package com.yujigu.summer.iwebot.chain.handler.system;
 
+import com.yujigu.summer.iwebot.entity.ResultMessage;
 import com.yujigu.summer.iwebot.wechat.body.WechatMessage;
 import com.yujigu.summer.iwebot.wechat.body.WechatSystemMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -9,8 +10,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class SystemPatMessageHandler extends SystemMessageAbstract{
     @Override
-    public void execute(String receiver, WechatSystemMessage wechatSystemMessage) {
+    public ResultMessage execute(String receiver, WechatSystemMessage wechatSystemMessage) {
         log.info("拍了拍");
+        return null;
     }
 
     @Override

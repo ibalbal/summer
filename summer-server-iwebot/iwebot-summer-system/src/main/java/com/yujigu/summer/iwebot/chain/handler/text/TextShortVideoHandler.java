@@ -4,6 +4,7 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.yujigu.summer.iwebot.entity.ResultMessage;
 import com.yujigu.summer.iwebot.entity.ResultMessageText;
 import com.yujigu.summer.iwebot.wechat.body.WechatMessage;
 import com.yujigu.summer.iwebot.wechat.body.WechatTextMessage;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TextShortVideoHandler extends TextMessageAbstract{
     @Override
-    public void execute(String receiver, WechatTextMessage wechatMessage) {
+    public ResultMessage execute(String receiver, WechatTextMessage wechatMessage) {
         log.info("短剧");
         StringBuilder resultMsg = new StringBuilder();
         try {
@@ -31,7 +32,7 @@ public class TextShortVideoHandler extends TextMessageAbstract{
                 ResultMessageText messageText = new ResultMessageText();
                 messageText.setMsg("未输入短剧名");
                 messageText.setReceiver(receiver);
-                messageText.execute();
+                return messageText;
             }
             String body = HttpUtil.createGet(newUrl).execute().body();
             JSONObject jsonObject = JSONUtil.parseObj(body);
@@ -67,7 +68,7 @@ public class TextShortVideoHandler extends TextMessageAbstract{
         ResultMessageText messageText = new ResultMessageText();
         messageText.setMsg(resultMsg);
         messageText.setReceiver(receiver);
-        messageText.execute();
+        return messageText;
     }
 
     @Override
