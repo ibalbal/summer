@@ -67,7 +67,7 @@ public class MusicServiceImpl implements MusicService {
         String decodeContent = lyricJSON.getString("decodeContent");
 
 
-        String musicUrl = "http://music.ibalbal.com/api/song/url?hash=HASH";
+        String musicUrl = "https://music.ibalbal.com/api/song/url?hash=HASH";
         String reqMusicUrl = musicUrl.replace("HASH", hash);
         String musicBody = HttpUtil.createGet(reqMusicUrl).addHeaders(UserAgentUtil.getHeaders()).execute().body();
         log.info("musicBody:{}", musicBody);
@@ -76,7 +76,7 @@ public class MusicServiceImpl implements MusicService {
         String url = musicJSON.getJSONArray("url").getString(0);
 
 
-        String details = "http://music.ibalbal.com/api/privilege/lite?hash=HASH";
+        String details = "https://music.ibalbal.com/api/privilege/lite?hash=HASH";
         String detailsUrl = details.replace("HASH", hash);
         String detailsBody = HttpUtil.createGet(detailsUrl).execute().body();
         JSONObject detailsJSON = JSONObject.parse(detailsBody).getJSONArray("data").getJSONObject(0);
@@ -86,7 +86,7 @@ public class MusicServiceImpl implements MusicService {
 
         MusicData musicData = new MusicData();
         musicData.setCover(cover);
-        musicData.setLink("http://music.ibalbal.com/#/pages/play/music?type=kg&hash="+hash);
+        musicData.setLink("https://music.ibalbal.com/#/pages/play/music?type=kg&hash="+hash);
         musicData.setLyrics(decodeContent);
         musicData.setSinger(singername);
         musicData.setTitle(albumname);
