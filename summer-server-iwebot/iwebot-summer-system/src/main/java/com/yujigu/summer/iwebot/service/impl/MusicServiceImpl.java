@@ -54,7 +54,7 @@ public class MusicServiceImpl implements MusicService {
         String id = candidates.getString("id");
         String accesskey = candidates.getString("accesskey");
 
-        String lyricDetailsUrl = "http://music.ibalbal.com/api/lyric?id=ID&accesskey=ACCESSKEY&fmt=lrc&decode=true";
+        String lyricDetailsUrl = "https://music.ibalbal.com/api/lyric?id=ID&accesskey=ACCESSKEY&fmt=lrc&decode=true";
         String reqLyricDetailsUrl = lyricDetailsUrl.replace("ID", id).replace("ACCESSKEY", accesskey);
         String lyricBody = HttpUtil.createGet(reqLyricDetailsUrl).execute().body();
         JSONObject lyricJSON = JSONObject.parse(lyricBody);
