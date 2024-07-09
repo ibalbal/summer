@@ -38,7 +38,7 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public MusicData details(String type, String hash) {
-        String lyricUrl = "http://music.ibalbal.com/api/search/lyric?hash=HASH";
+        String lyricUrl = "https://music.ibalbal.com/api/search/lyric?hash=HASH";
         String reqLyricUrl = lyricUrl.replace("HASH", hash);
         String body = HttpUtil.createGet(reqLyricUrl).execute().body();
         JSONObject parse = JSONObject.parse(body);
