@@ -44,7 +44,7 @@ public class TextSongHandler extends TextMessageAbstract{
             String song_singer = infosJSONObject.getStr("singername");
             String quality = "即音乐";
             String cover = "https://minio.ibalbal.com:800/wx-mini/music.png";
-            String link = "http://music.ibalbal.com/#/pages/play/music?type=kg&hash="+ infosJSONObject.getStr("hash");
+            String link = "https://music.ibalbal.com/#/pages/play/music?type=kg&hash="+ infosJSONObject.getStr("hash");
             ResultMessageRichText resultMessageRichText = new ResultMessageRichText();
             resultMessageRichText.setUrl(link);
             resultMessageRichText.setTitle( song_name );
