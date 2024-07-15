@@ -20,11 +20,6 @@ public abstract class ResultMessage implements Serializable {
     @Getter
     private String sendUrl;
 
-    //接收人
-    @Setter
-    @Getter
-    private String receiver;
-
     public boolean execute(String preUrl, String token) {
         String body = JSON.toJSON(this).toString();
         Map<String,String > headers = new HashMap();

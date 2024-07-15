@@ -1,8 +1,6 @@
 package com.yujigu.summer.iwebot.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,7 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResultMessageText extends ResultMessage {
-
+    //接收人
+    private String receiver;
     //消息体
     private Object msg;
 

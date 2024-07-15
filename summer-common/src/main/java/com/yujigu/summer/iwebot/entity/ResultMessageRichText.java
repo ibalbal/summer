@@ -1,8 +1,6 @@
 package com.yujigu.summer.iwebot.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * 发送卡片 文本消息
@@ -11,7 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResultMessageRichText extends ResultMessage {
-
+    //接收人
+    private String receiver;
     //填公众号 id 可以显示对应的头像（gh_ 开头的）
     private String account;
 
