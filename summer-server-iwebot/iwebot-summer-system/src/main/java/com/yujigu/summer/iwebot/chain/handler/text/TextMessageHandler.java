@@ -19,8 +19,6 @@ import java.util.Collections;
 @Component
 public class TextMessageHandler extends TextMessageAbstract{
 
-    @Autowired
-    private MessageConfig messageConfig;
 
     @Override
     public boolean isChain(WechatMessage wechatMessage) {
@@ -29,14 +27,6 @@ public class TextMessageHandler extends TextMessageAbstract{
 
     @Override
     public ResultMessage execute(String receiver, WechatTextMessage wechatMessage) {
-        if (ObjectUtils.isEmpty(wechatMessage.getRoomid())){
-            //消息转发
-            Long messageId = wechatMessage.id;
-            ResultMessageForward wxidOa0rwmnimagm21 = new ResultMessageForward(messageId, Collections.singletonList("wxid_oa0rwmnimagm21"));
-            wxidOa0rwmnimagm21.execute(messageConfig.getUrl(), messageConfig.getToken());
-
-
-        }
         log.info("TextMessageHandler 文本处理");
         if(china  != null){
             china.handleMessage(receiver, wechatMessage);
